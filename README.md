@@ -5,18 +5,25 @@ CS 188 | UCLA | Spring 2015
 ## Team yam
 
 Built with tender, loving care by **Team yam**:
-Crystal Hsieh 
-Ky-Cuong Huynh
-Ryan Voong
-Trevor Anderson 
+* Crystal Hsieh 
+* Ky-Cuong Huynh
+* Ryan Voong
+* Trevor Anderson 
 
 
 ## Project Description 
 
 Yam is a multiplayer gaming platform. We're beginning 
 with tic-tac-toe, and plan on rapidly adding new features 
-(rankings, leaderboards, etc.) and games. Check back soon
-for the latest and greatest!
+Check back soon for the latest and greatest!
+
+Here's what we have planned right now for our core features: 
+
+* Multiplayer tic-tac-toe matches between users, with 
+  game state managed by the server to prevent cheating
+* A match-making system, allowing random matches, or ones
+  selected by player ranking
+* User profile pages: know thyself and know thy opponent
 
 
 ## Links
