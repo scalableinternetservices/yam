@@ -13,12 +13,18 @@ Trevor Anderson
 
 ## Project Description 
 
-
+Yam is a multiplayer gaming platform. We're beginning 
+with tic-tac-toe, and plan on rapidly adding new features 
+(rankings, leaderboards, etc.) and games. Check back soon
+for the latest and greatest!
 
 
 ## Links
 
-* PivotalTracker project: 
+You can see our latest upcoming functionality, divided into
+units called "stories" here:
+
+* [PivotalTracker project](https://www.pivotaltracker.com/projects/1321096)
 
 
 
