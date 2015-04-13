@@ -1,0 +1,17 @@
+# Travis CI script for Yam 
+
+# We tell it what languages and versions
+# of those languages to expect so that its
+# build environment can be properly configured
+
+language: ruby
+rvm:
+    - "1.8.7"
+    - "1.9.2"
+    - "1.9.3"
+    - "2.2.1"
+    - jruby-18mode
+    - jurby-19mode
+    - rbx
+
+
