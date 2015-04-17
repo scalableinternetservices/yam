@@ -1,4 +1,5 @@
 # Yam
+[![Build Status](https://travis-ci.org/scalableinternetservices/yam.svg?branch=master)](https://travis-ci.org/scalableinternetservices/yam)
 
 CS 188 | UCLA | Spring 2015
 
@@ -21,15 +22,14 @@ Built with tender, loving care by **Team yam**:
 ## Project Description 
 
 Yam is a multiplayer gaming platform. We're beginning 
-with tic-tac-toe, and plan on rapidly adding new features 
+with two-player 2048, and plan on rapidly adding new features.
 Check back soon for the latest and greatest!
 
-Here's what we have planned right now for our core features: 
+Here's what we have coming up soon:
 
-* Multiplayer tic-tac-toe matches between users, with 
+* Two-player 2048 matches between users, with 
   game state managed by the server to prevent cheating
-* A match-making system, allowing random matches, or ones
-  selected by player ranking
+* A match-making system, with multiple selection algorithms
 * User profile pages: know thyself and know thy opponent
 
 
@@ -39,6 +39,9 @@ You can see our latest upcoming functionality, divided into
 units called "stories" here:
 
 * [PivotalTracker project](https://www.pivotaltracker.com/projects/1321096)
+
+To see if our builds are passing, click on the Travis CI 
+button above, or go [here](https://travis-ci.org/scalableinternetservices/yam/builds).
 
 
 
