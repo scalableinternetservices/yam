@@ -3,7 +3,21 @@
 
 CS 188 | UCLA | Spring 2015
 
-## Team yam
+## Meet Yam 
+
+Yam is a multiplayer gaming platform. We're beginning 
+with two-player 2048, and plan on rapidly adding new features.
+Check back soon for the latest and greatest!
+
+Here's what we have coming up soon:
+
+* Two-player 2048 matches between users, with 
+  game state managed by the server to prevent cheating
+* A match-making system, with multiple selection algorithms
+* User profile pages: know thyself and know thy opponent
+
+
+## Team Yam
 
 Built with tender, loving care by **Team yam**:
 * Crystal Hsieh
@@ -19,29 +33,16 @@ Built with tender, loving care by **Team yam**:
 
 ![](https://avatars3.githubusercontent.com/u/4506383?v=3&s=200)
 
-## Project Description 
+## Our Progress
 
-Yam is a multiplayer gaming platform. We're beginning 
-with two-player 2048, and plan on rapidly adding new features.
-Check back soon for the latest and greatest!
-
-Here's what we have coming up soon:
-
-* Two-player 2048 matches between users, with 
-  game state managed by the server to prevent cheating
-* A match-making system, with multiple selection algorithms
-* User profile pages: know thyself and know thy opponent
-
-
-## Links
-
-You can see our latest upcoming functionality, divided into
-units called "stories" here:
+You can see our upcoming features, divided into
+units called "stories", here:
 
 * [PivotalTracker project](https://www.pivotaltracker.com/projects/1321096)
 
-To see if our builds are passing, click on the Travis CI 
-button above, or go [here](https://travis-ci.org/scalableinternetservices/yam/builds).
+To see if our builds are passing, see the Travis CI 
+button above, or go 
+[here](https://travis-ci.org/scalableinternetservices/yam/builds).
 
 
 
