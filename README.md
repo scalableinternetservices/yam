@@ -5,12 +5,18 @@ CS 188 | UCLA | Spring 2015
 ## Team yam
 
 Built with tender, loving care by **Team yam**:
-* Crystal Hsieh 
-* Ky-Cuong Huynh
-![](https://avatars3.githubusercontent.com/u/4713937?v=3&s=460 =100x100)
-* Ryan Voong
-* Trevor Anderson 
+* Crystal Hsieh
 
+![](https://avatars3.githubusercontent.com/u/5697626?v=3&s=200)
+* Ky-Cuong Huynh
+
+![](https://avatars3.githubusercontent.com/u/4713937?v=3&s=200)
+* Ryan Voong
+
+![](https://avatars0.githubusercontent.com/u/9437694?v=3&s=200)
+* Trevor Anderson
+
+![](https://avatars3.githubusercontent.com/u/4506383?v=3&s=200)
 
 ## Project Description 
 
