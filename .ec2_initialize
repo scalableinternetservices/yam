@@ -1,1 +1,2 @@
-sudo yum install -y gcc ruby-devel libxml2 libxml2-devel libxslt libxslt-devel
+sudo yum install -y patch
+sudo yum install -y sqlite-devel
