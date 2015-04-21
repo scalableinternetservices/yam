@@ -83,8 +83,28 @@ def collapse_row(row)
 end
 
 
-puts "[ #{collapse_row( [false, false, false, false] ).join(",")} ]"
-#puts "#{[1,false,1].select {|e| if e then true else false end}.join(",")}"
-puts "[ #{collapse_row( [false, 1,     false, false] ).join(",")} ]"
-puts "[ #{collapse_row( [1, false, 1] ).join(",")} ]"
-puts "[ #{collapse_row( [1, 1, 2, 3] ).join(",")} ]"
+
+# Value is what user wants to plop in at (row, column)
+def place_piece(board, row, column, value)
+    nboard = Matrix.build(4) { |r, c| 
+        # Matching coordinate and nothing already there
+        if r == row && c == column && !board[r,c]
+           value
+        # The rest of the board
+        else 
+           board[r,c] 
+        end
+    }
+
+    # Any additional work needed?
+    nboard
+end
+
+# Passing
+#puts "[ #{collapse_row( [false, false, false, false] ).join(",")} ]"
+##puts "#{[1,false,1].select {|e| if e then true else false end}.join(",")}"
+#puts "[ #{collapse_row( [false, 1,     false, false] ).join(",")} ]"
+#puts "[ #{collapse_row( [1, false, 1] ).join(",")} ]"
+#puts "[ #{collapse_row( [1, 1, 2, 3] ).join(",")} ]"
+
+puts place_piece(board, 0, 0, 9)
