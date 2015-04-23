@@ -23,10 +23,10 @@ class Board
                 ]
             when :down
                 nboard = Matrix[
-                    collapse_row(@board.column(0).reverse).reverse,
-                    collapse_row(@board.column(1).reverse).reverse,
-                    collapse_row(@board.column(2).reverse).reverse,
-                    collapse_row(@board.column(3).reverse).reverse,
+                    collapse_row(@board.column(0).to_a.reverse).reverse,
+                    collapse_row(@board.column(1).to_a.reverse).reverse,
+                    collapse_row(@board.column(2).to_a.reverse).reverse,
+                    collapse_row(@board.column(3).to_a.reverse).reverse,
                 ]
             when :left
                 nboard = Matrix[ 
@@ -37,10 +37,10 @@ class Board
                 ]
             when :right
                 nboard = Matrix[ 
-                    collapse_row(@board.row(0).reverse).reverse,
-                    collapse_row(@board.row(1).reverse).reverse,
-                    collapse_row(@board.row(2).reverse).reverse,
-                    collapse_row(@board.row(3).reverse).reverse
+                    collapse_row(@board.row(0).to_a.reverse).reverse,
+                    collapse_row(@board.row(1).to_a.reverse).reverse,
+                    collapse_row(@board.row(2).to_a.reverse).reverse,
+                    collapse_row(@board.row(3).to_a.reverse).reverse
                 ]
         end
 
@@ -77,7 +77,7 @@ class Board
             nrow << false
         end
 
-        nrow
+        nrow.to_a
     end
 
 
@@ -110,7 +110,9 @@ class Game
     def initialize()
         @board = Board.new
         #@board.place_piece(0, 0, 1)
-        @board.place_piece(1, 1, 1)
+        @board.place_piece(row = 1, column = 1, value = 1)
+        @board.place_piece(3, 3, 1)
+        @board.place_piece(2, 2, 1)
     end
 
 public
