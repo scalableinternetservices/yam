@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :games
 
-  root 'home#index', as: 'home'
+  root 'static_pages#home', as: 'home'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
