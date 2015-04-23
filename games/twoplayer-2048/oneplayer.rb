@@ -83,7 +83,7 @@ class Board
 
 
     # Value is what user wants to plop in at (row, column)
-    def place_piece(board, row, column, value)
+    def place_piece(row, column, value)
         nboard = Matrix.build(4) { |r, c| 
             # Matching coordinate and nothing already there
             if r == row && c == column && !@board[r,c]
@@ -97,11 +97,28 @@ class Board
         # Any additional work needed?
         @board = nboard
     end
+
+    def print
+        @board.row_size.times do |i|
+            puts @board.row(i).join(",")
+        end
+    end
 end
 
 class Game
     def initialize()
         @board = Board.new
+    end
+
+public
+
+    # Apply player move to board 
+    def play()
+        loop do
+            @board.print
+            #read_char
+
+        end
     end
 
     # Internal helper functions
@@ -111,19 +128,18 @@ class Game
     def read_char
         STDIN.echo = false
         STDIN.raw!
-     
+
         input = STDIN.getc.chr
         if input == "\e" then
             input << STDIN.read_nonblock(3) rescue nil
             input << STDIN.read_nonblock(2) rescue nil
         end
-        ensure
-            STDIN.echo = true
-            STDIN.cooked!
-     
+    ensure
+        STDIN.echo = true
+        STDIN.cooked!
+
         return input
     end
-
     def key2sym(input_char)
         case input_char
         when "\e[A"
