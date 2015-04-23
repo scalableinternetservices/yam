@@ -104,10 +104,38 @@ class Game
         @board = Board.new
     end
 
-    
+    # Internal helper functions
+    private
+    # Read in keyboard input
+    # Original from https://gist.github.com/acook/4190379
+    def read_char
+        STDIN.echo = false
+        STDIN.raw!
+     
+        input = STDIN.getc.chr
+        if input == "\e" then
+            input << STDIN.read_nonblock(3) rescue nil
+            input << STDIN.read_nonblock(2) rescue nil
+        end
+        ensure
+            STDIN.echo = true
+            STDIN.cooked!
+     
+        return input
+    end
 
-    # Apply player move to board 
-    
+    def key2sym(input_char)
+        case input_char
+        when "\e[A"
+            :up
+        when "\e[B"
+            :down
+        when "\e[C"
+            :right
+        when "\e[D"
+            :left
+        end
+    end
 end
 
 # Map keyboard strokes to directions
