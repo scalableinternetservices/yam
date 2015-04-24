@@ -5,10 +5,18 @@ require 'io/console'
 
 # The board, in charge of tracking its own state
 class Board
-    def initialize()
+    def initialize(matrix=nil)
         # Boards hold 'false' for an empty cell
         # and a number otherwise
-        @board = Matrix.build(4, 4) { false }
+        if matrix
+            @board = matrix
+        else
+            @board = Matrix.build(4, 4) { false }
+        end
+    end
+
+    def board
+        return @board
     end
 
     def apply_move(move) 
@@ -48,8 +56,12 @@ class Board
                 ]
         end
 
+        def !=(board)
+            !(@board == board.board)
+        end
+
         # Update internal board
-        @board = nboard
+        Board.new(nboard)
     end
 
     #|> (Array.fold (fun acc elem -> 
@@ -88,6 +100,7 @@ class Board
 
     # Value is what user wants to plop in at (row, column)
     def place_piece(row, column, value)
+        #puts "Debug: #{row}, #{column}, #{value}"
         nboard = Matrix.build(4) { |r, c|
             # Matching coordinate and nothing already there
             if r == row && c == column && !@board[r,c]
@@ -99,7 +112,7 @@ class Board
         }
 
         # Any additional work needed?
-        @board = nboard
+        Board.new(nboard)
     end
 
     def print
@@ -114,18 +127,40 @@ class Game
     def initialize()
         @board = Board.new
         #@board.place_piece(0, 0, 1)
-        @board.place_piece(row = 1, column = 1, value = 1)
         @board.place_piece(3, 3, 1)
         @board.place_piece(2, 2, 1)
+        @board.place_piece(0, 0, 2)
+        @board.place_piece(1, 1, 2)
     end
 
 public
 
     # Apply player move to board 
     def play()
+        currentboard = Board.new.place_piece(3, 3, 1).place_piece(2, 2, 1).place_piece(0, 0, 2).place_piece(1, 1, 2)
+        currentboard.print
         loop do
-            @board.print
-            @board.apply_move(key2sym(read_char))
+            loop do
+                nextboard = currentboard.apply_move(key2sym(read_char))
+                if nextboard != currentboard #TODO: Need to be able to compare
+                    currentboard = nextboard
+                    break
+                end
+            end
+            currentboard.print
+            loop do 
+                puts "Place a piece."
+                print "RCV: "
+                input = gets.chomp.split("").map {|elem| elem.to_i}
+                if (input[0] >= 0 && input[0] < 4 && input[1] >= 0 && input[1] < 4 && (input[2] == 1 || input[2] == 2))
+                    nextboard = currentboard.place_piece(*input)
+                    if (nextboard != currentboard)
+                        currentboard = nextboard 
+                        currentboard.print
+                        break
+                    end
+                end
+            end
         end
     end
 
@@ -159,6 +194,7 @@ private
             :right
         when "\e[D"
             :left
+        # TODO: Add "quit" key 
         end
     end
 end
