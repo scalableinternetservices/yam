@@ -15,19 +15,23 @@ class Board
         nboard = Matrix.build(4, 4)
         case move
             when :up
-                nboard = Matrix[ 
+                nboard = Matrix.columns(
+                [
                     collapse_row(@board.column(0)),
                     collapse_row(@board.column(1)),
                     collapse_row(@board.column(2)),
                     collapse_row(@board.column(3))
                 ]
+                )
             when :down
-                nboard = Matrix[
+                nboard = Matrix.columns(
+                [
                     collapse_row(@board.column(0).to_a.reverse).reverse,
                     collapse_row(@board.column(1).to_a.reverse).reverse,
                     collapse_row(@board.column(2).to_a.reverse).reverse,
                     collapse_row(@board.column(3).to_a.reverse).reverse,
                 ]
+                )
             when :left
                 nboard = Matrix[ 
                     collapse_row(@board.row(0)),
