@@ -11,7 +11,15 @@ class Board
         if matrix
             @board = matrix
         else
-            @board = Matrix.build(4, 4) { false }
+            @board = Matrix.build(4, 4) {|r,c|
+                if(r==0 && c==0)
+                    1
+                elsif (r==0 && c==1)
+                    1
+                else
+                    false
+                end
+            }
         end
     end
 
@@ -110,7 +118,7 @@ class Game
 public
     # Scaffolding for commandline 2048 (one board)
     def play()
-        currentboard = Board.new.place_piece(0, 0, 1).place_piece(0, 1, 1)
+        currentboard = Board.new
         currentboard.print
         loop do
             loop do

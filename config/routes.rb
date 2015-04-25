@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
-  get 'game2048/move'
+  post 'game2048/play', :to => 'game2048#play' # Begin playing 
 
-  get 'game2048/place'
-
-  get 'game2048/move'
-
-  get 'game2048/place'
+  get 'game2048/play',  :to => 'game2048#show'  # Show current board
+  
+  post 'game2048/move'  # Player submits move for board and places piece
+                        # Redirect to play to show latest board state
 
   get 'static_pages/home'
 
