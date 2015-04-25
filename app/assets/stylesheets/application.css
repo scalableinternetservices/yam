@@ -22,6 +22,12 @@ body {
 
 .jumbotron {
 	color: white;
+	background-color: black;
 	background-image: url("potatoheartbanner.png");
 	background-size: cover;
+	padding-left: 120px;
+}
+
+#banner {
+	line-height: 10px;
 }
