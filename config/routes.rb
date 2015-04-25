@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'game2048/move'
+
+  get 'game2048/place'
+
+  get 'game2048/move'
+
+  get 'game2048/place'
+
   get 'static_pages/home'
 
   get 'home/index'
