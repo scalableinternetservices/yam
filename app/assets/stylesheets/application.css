@@ -24,14 +24,5 @@ body {
 	color: white;
 	background-color: black;
 	background-image: url("potatoheartbanner.png");
-	background-size: cover;
 	padding-left: 120px;
-}
-
-.what {
-	padding-right: 50px;
-}
-
-.container {
-
 }
