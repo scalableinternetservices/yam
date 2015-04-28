@@ -1,7 +1,5 @@
 Rails.application.routes.draw do
-  post 'game2048/play', :to => 'game2048#play' # Begin playing 
-
-  get 'game2048/play',  :to => 'game2048#show'  # Show current board
+  get 'game2048/show'   # Display latest board
   
   post 'game2048/move'  # Player submits move for board and places piece
                         # Redirect to play to show latest board state

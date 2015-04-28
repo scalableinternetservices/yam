@@ -1,7 +1,25 @@
 <h1>game2048#show</h1>
+
 <div id="player1">
     <%= @board1 %>
 </div>
 <div id="player2">
     <%= @board2 %>
 </div>
+
+
+<%= form_tag("/game2048/move", method: "post") do %>
+  <%= label_tag(:dir, "Direction") %>
+  <%= text_field_tag(:dir) %>
+
+  <%= label_tag(:row, "Row") %>
+  <%= text_field_tag(:row) %>
+
+  <%= label_tag(:col, "Column") %>
+  <%= text_field_tag(:col) %>
+
+  <%= label_tag(:val, "Value") %>
+  <%= text_field_tag(:val) %>
+
+  <%= submit_tag("Submit") %>
+<% end %>

@@ -3,12 +3,41 @@
 require 'matrix'
 require 'io/console'
 
+def str2dir(str)
+        case str
+        when "up"
+            :up
+        when "down"
+            :down
+        when "left" 
+            :left
+        when "right"
+            :right
+        end
+    end
+
 # Board is immutable. State change operations return a new Board
 # Boards hold 'false' for an empty cell
 # and a number otherwise
 class Board
   def board
     return @board
+  end
+
+  # TODO: Test this; makes a string representing
+  # a board to be entered into model 
+  # Board.initialize with string arg will give
+  # a board from such a string
+  def to_s
+    @board.row_vectors.inject("") {|r_acc,r_elem|
+      elem.to_a.inject("") {|acc,elem|
+        if !elem
+          "0,"
+        else
+          elem.to_s + ","
+        end
+      }
+    }
   end
 
   def apply_move(move) 
@@ -101,9 +130,21 @@ class Board
       end
       str
     end
-  def initialize(matrix=nil)
+
+    # TODO: Check usage: initialize(matrix: someMatrix, str: "esrf")
+  def initialize(matrix=nil, str=nil)
     if matrix
       @board = matrix
+    # Make board from string held by model 
+    # TODO: Test this!
+    elsif str
+      vals = str.split(",")
+      @board = Matrix[
+      vals.slice(0,3).map {|x| if(x==0)then false else x.to_i end },
+      vals.slice(4,7).map {|x| if(x==0)then false else x.to_i end },
+      vals.slice(8,11).map {|x| if(x==0)then false else x.to_i end },
+      vals.slice(12,15).map {|x| if(x==0)then false else x.to_i end }]
+
     else
       @board = Matrix.build(4, 4) {|r,c|
                 if(r==0 && c==0)
@@ -193,26 +234,44 @@ class Game2048Controller < ApplicationController
 
   # Display updated board
   def show
+    # TODO: Convert to actual model-interaction code
+    test = Game2048.getBoard
+    if ! test 
+      emptyboard = Board.new
+      test = Game2048.new
+      test.board1 = emptyboard.to_s
+      test.board2 = emptyboard.to_s
+      test.player1turn = true
+      test.save
+    end
+    puts test.class
+
+
+    @message = "place your piece and move your board"
     @board1 = @p1board.print
     @board2 = @p2board.print
+
   end
 
   # Move and place piece
-  def move
+  def move 
+    # Params holds user input from POST request
     dir = params[:dir]
     row = params[:row]
     col = params[:col]
     val = params[:val]
+    # puts "Params: #{dir}, #{row}, #{col}, #{val}"
     # Move and place piece must both be valid until turn ends
     if(@player1turn)
-       # TODOFUNCTION converts form's move direction ("up") 
-       # to symbol (:up)
-      @p1board = @p1board.apply_move(TODOFUNCTION(dir))
+      @p1board = @p1board.apply_move(str2dir(dir))
       @p2board = @p2board.place_piece(row.to_i,col.to_i,val.to_i)
     else
-      @p2board = @p2board.apply_move(TODOFUNCTION(dir))
+      @p2board = @p2board.apply_move(str2dir(dir))
       @p1board = @p1board.place_piece(row.to_i,col.to_i,val.to_i)
     end
     @player1turn = !@player1turn
+
+    # Redirect to show() to display updated board
+    redirect_to action: "show"
   end
 end
