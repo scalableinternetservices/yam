@@ -3,6 +3,7 @@ class Game2048 < ActiveRecord::Base
     def self.getBoard
         state = Game2048.take
         puts state
+        state
     end
 
     # TODO: Write this!

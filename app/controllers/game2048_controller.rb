@@ -30,7 +30,7 @@ class Board
   # a board from such a string
   def to_s
     @board.row_vectors.inject("") {|r_acc,r_elem|
-      elem.to_a.inject("") {|acc,elem|
+      r_elem.to_a.inject("") {|acc,elem|
         if !elem
           "0,"
         else
@@ -123,7 +123,8 @@ class Board
        Board.new(nboard)
      end
 
-     def print
+     # Used only for console version
+     def cli_print
       str = ""
       @board.row_size.times do |i|
         str += @board.row(i).to_a.join(",") + "\n"
@@ -140,10 +141,10 @@ class Board
     elsif str
       vals = str.split(",")
       @board = Matrix[
-      vals.slice(0,3).map {|x| if(x==0)then false else x.to_i end },
-      vals.slice(4,7).map {|x| if(x==0)then false else x.to_i end },
-      vals.slice(8,11).map {|x| if(x==0)then false else x.to_i end },
-      vals.slice(12,15).map {|x| if(x==0)then false else x.to_i end }]
+      vals.slice(0,3).map   {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(4,7).map   {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(8,11).map  {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(12,15).map {|x| if (x == 0) then false else x.to_i end }]
 
     else
       @board = Matrix.build(4, 4) {|r,c|
@@ -164,7 +165,7 @@ class Board
     # Scaffolding for commandline 2048 (one board)
     def play()
       currentboard = Board.new
-      currentboard.print
+      currentboard.cli_print
       loop do
         loop do
           nextboard = currentboard.apply_move(key2sym(read_char))
@@ -173,7 +174,7 @@ class Board
             break
           end
         end
-        currentboard.print
+        currentboard.cli_print
         loop do 
           puts "Place a piece."
           print "RCV: "
@@ -183,7 +184,7 @@ class Board
                   nextboard = currentboard.place_piece(*input)
                   if (nextboard != currentboard)
                     currentboard = nextboard 
-                    currentboard.print
+                    currentboard.cli_print
                     break
                   end
                 end
@@ -227,30 +228,65 @@ class Board
 class Game2048Controller < ApplicationController
   # TODO: Single game at one time for now
   def initialize
-    @p1board = Board.new
-    @p2board = Board.new
-    @player1turn = true
+
+  end
+
+  # Print formatted grid from model data of boards
+  # model_board is the string held by the model
+  # Returns a formatted string with text-based board for display
+  def print(model_board)
+      vals = model_board.split(",")
+      puts "model_board: #{model_board}"
+      puts "vals: #{vals.class} + #{vals}"
+      board_matrix = Matrix[
+        vals.slice(0,3).map   {|x| if (x == 0) then false else x.to_i end },
+        vals.slice(4,7).map   {|x| if (x == 0) then false else x.to_i end },
+        vals.slice(8,11).map  {|x| if (x == 0) then false else x.to_i end },
+        vals.slice(12,15).map {|x| if (x == 0) then false else x.to_i end }
+      ]
+
+      result = ""
+      # Get each row as an array and then join for formatting
+      board_matrix.row_vectors.each do |row_vec|
+        # "-" for empty cells, number literal otherwise
+        formatted_vec = row_vec.map do |elem| 
+          if (elem == false)
+            "-" 
+          else 
+            elem
+          end
+        end
+        result << formatted_vec.to_a.join("  ") + "\n" 
+      end
   end
 
   # Display updated board
   def show
     # TODO: Convert to actual model-interaction code
-    test = Game2048.getBoard
-    if ! test 
+    @test = Game2048.take
+    if ! @test 
+      @test = Game2048.new
       emptyboard = Board.new
-      test = Game2048.new
-      test.board1 = emptyboard.to_s
-      test.board2 = emptyboard.to_s
-      test.player1turn = true
-      test.save
+      puts "emptyboard: #{emptyboard}"
+
+      # TODO: replace test code
+      @test.board1 = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+      @test.board2 = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
+      # Game2048 model has two string attributes, 
+      # to hold both the boards
+      # @test.board1 = emptyboard.to_s
+      # @test.board2 = emptyboard.to_s
+      # puts @test.board1
+      @test.player1turn = true
+      @test.save
     end
-    puts test.class
 
-
-    @message = "place your piece and move your board"
-    @board1 = @p1board.print
-    @board2 = @p2board.print
-
+    @message = "Place your piece and move your board"
+    # Print out boards
+    puts "----BOARD1: #{@test.board1.class} + #{@test.board1}"
+    puts "----BOARD2: #{@test.board2.class} + #{@test.board2}"
+    @display_board1 = print(@test.board1)
+    @display_board2 = print(@test.board2)
   end
 
   # Move and place piece
