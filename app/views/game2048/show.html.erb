@@ -1,10 +1,26 @@
 <h1>game2048#show</h1>
 
+<% if @display_p1_turn %>
+    <p>Player 1's turn</p>
+<% else %>
+    <p>Player 2's turn</p>
+<% end %>
+
 <div id="player1">
-    <%= @display_board1 %>
+  <p>Player 1</p>
+  <p>
+    <% @display_board1.each do |r| %>
+        <%= r %><br>
+      <% end %>
+  </p>
 </div>
 <div id="player2">
-    <%= @display_board2 %>
+  <p>Player 2</p>
+  <p>
+    <% @display_board2.each do |r| %>
+        <%= r %><br>
+    <% end %>
+  </p>
 </div>
 
 

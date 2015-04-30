@@ -41,7 +41,7 @@ class Board
     str.slice(0, str.length-1)
   end
 
-  def apply_move(move) 
+  def apply_move(move)
     nboard = Matrix.build(4, 4)
     case move
     when :up
@@ -142,10 +142,10 @@ class Board
     elsif str
       vals = str.split(",")
       @board = Matrix[
-      vals.slice(0,3).map   {|x| if (x == 0) then false else x.to_i end },
-      vals.slice(4,7).map   {|x| if (x == 0) then false else x.to_i end },
-      vals.slice(8,11).map  {|x| if (x == 0) then false else x.to_i end },
-      vals.slice(12,15).map {|x| if (x == 0) then false else x.to_i end }]
+      vals.slice(0,4).map  {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(4,4).map  {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(8,4).map  {|x| if (x == 0) then false else x.to_i end },
+      vals.slice(12,4).map {|x| if (x == 0) then false else x.to_i end }]
 
     else
       @board = Matrix.build(4, 4) {|r,c|
@@ -158,6 +158,7 @@ class Board
                 end
             }
     end
+    puts "@board: #{@board.class} #{@board}"
   end
   end
 
@@ -245,7 +246,7 @@ class Game2048Controller < ApplicationController
         vals.slice(12,4).map {|x| if (x == 0) then 0 else x.to_i end }
       ]
 
-      result = ""
+      result = []
       # Get each row as an array and then join for formatting
       board_matrix.row_vectors.each do |row_vec|
         # "-" for empty cells, number literal otherwise
@@ -256,8 +257,9 @@ class Game2048Controller < ApplicationController
             elem
           end
         end
-        result << formatted_vec.to_a.join("  ") + "\n" 
+        result << formatted_vec.to_a
       end
+    result
   end
 
   # Display updated board
@@ -280,25 +282,29 @@ class Game2048Controller < ApplicationController
     # Print out boards
     @display_board1 = print(@test.board1)
     @display_board2 = print(@test.board2)
+    @display_p1_turn = @test.player1turn
   end
 
   # Move and place piece
-  def move 
+  def move
+    @test = Game2048.take
     # Params holds user input from POST request
+    # TODO: id's for each game
     dir = params[:dir]
     row = params[:row]
     col = params[:col]
     val = params[:val]
-    # puts "Params: #{dir}, #{row}, #{col}, #{val}"
+
     # Move and place piece must both be valid until turn ends
-    if(@player1turn)
-      @p1board = @p1board.apply_move(str2dir(dir))
-      @p2board = @p2board.place_piece(row.to_i,col.to_i,val.to_i)
+    if(@test.player1turn)
+      @test.board1 = Board.new(nil, @test.board1).apply_move(str2dir(dir)).to_s
+      @test.board2 = Board.new(nil, @test.board2).place_piece(row.to_i,col.to_i,val.to_i).to_s
     else
-      @p2board = @p2board.apply_move(str2dir(dir))
-      @p1board = @p1board.place_piece(row.to_i,col.to_i,val.to_i)
+      @test.board2 = Board.new(nil, @test.board2).apply_move(str2dir(dir)).to_s
+      @test.board1 = Board.new(nil, @test.board1).place_piece(row.to_i,col.to_i,val.to_i).to_s
     end
-    @player1turn = !@player1turn
+    @test.player1turn = !@test.player1turn
+    @test.save
 
     # Redirect to show() to display updated board
     redirect_to action: "show"
