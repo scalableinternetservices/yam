@@ -29,15 +29,16 @@ class Board
   # Board.initialize with string arg will give
   # a board from such a string
   def to_s
-    @board.row_vectors.inject("") {|r_acc,r_elem|
-      r_elem.to_a.inject("") {|acc,elem|
+    str = @board.row_vectors.inject("") {|r_acc,r_elem|
+      r_acc + r_elem.to_a.inject("") {|acc,elem|
         if !elem
-          "0,"
+          acc + "0,"
         else
-          elem.to_s + ","
+          acc + elem.to_s + ","
         end
       }
     }
+    str.slice(0, str.length-1)
   end
 
   def apply_move(move) 
@@ -236,13 +237,12 @@ class Game2048Controller < ApplicationController
   # Returns a formatted string with text-based board for display
   def print(model_board)
       vals = model_board.split(",")
-      puts "model_board: #{model_board}"
-      puts "vals: #{vals.class} + #{vals}"
+
       board_matrix = Matrix[
-        vals.slice(0,3).map   {|x| if (x == 0) then false else x.to_i end },
-        vals.slice(4,7).map   {|x| if (x == 0) then false else x.to_i end },
-        vals.slice(8,11).map  {|x| if (x == 0) then false else x.to_i end },
-        vals.slice(12,15).map {|x| if (x == 0) then false else x.to_i end }
+        vals.slice(0,4).map  {|x| if (x == 0) then 0 else x.to_i end },
+        vals.slice(4,4).map  {|x| if (x == 0) then 0 else x.to_i end },
+        vals.slice(8,4).map  {|x| if (x == 0) then 0 else x.to_i end },
+        vals.slice(12,4).map {|x| if (x == 0) then 0 else x.to_i end }
       ]
 
       result = ""
@@ -264,27 +264,20 @@ class Game2048Controller < ApplicationController
   def show
     # TODO: Convert to actual model-interaction code
     @test = Game2048.take
-    if ! @test 
+    if ! @test
       @test = Game2048.new
       emptyboard = Board.new
-      puts "emptyboard: #{emptyboard}"
 
-      # TODO: replace test code
-      @test.board1 = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
-      @test.board2 = "0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0"
-      # Game2048 model has two string attributes, 
+      # Game2048 model has two string attributes,
       # to hold both the boards
-      # @test.board1 = emptyboard.to_s
-      # @test.board2 = emptyboard.to_s
-      # puts @test.board1
+      @test.board1 = emptyboard.to_s
+      @test.board2 = emptyboard.to_s
       @test.player1turn = true
       @test.save
     end
 
     @message = "Place your piece and move your board"
     # Print out boards
-    puts "----BOARD1: #{@test.board1.class} + #{@test.board1}"
-    puts "----BOARD2: #{@test.board2.class} + #{@test.board2}"
     @display_board1 = print(@test.board1)
     @display_board2 = print(@test.board2)
   end
