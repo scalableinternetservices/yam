@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   get 'game2048/show'   # Display latest board
   
   post 'game2048/move'  # Player submits move for board and places piece

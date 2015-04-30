@@ -1,5 +1,8 @@
 source 'https://rubygems.org'
 
+# Add Devise for user authentication
+gem 'devise'
+
 # Add bootstrap for CSS
 gem 'bootstrap-sass', '~> 3.2.0'
 gem 'autoprefixer-rails'
