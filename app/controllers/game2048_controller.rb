@@ -152,6 +152,10 @@ class Board
 end
 
 class Game2048Controller < ApplicationController
+
+  #redirect to login if not logged in
+  before_action :authenticate_user!
+
   # Print formatted grid from model data of boards
   # model_board is the string held by the model
   # Returns a formatted string with text-based board for display
