@@ -158,6 +158,7 @@ class Game2048Controller < ApplicationController
   def print(model_board)
     vals = model_board.split(",")
     board_matrix = Matrix[
+    
         vals.slice(0,4).map  { |x| x.to_i },
         vals.slice(4,4).map  { |x| x.to_i },
         vals.slice(8,4).map  { |x| x.to_i },
