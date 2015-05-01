@@ -1,2 +1,1 @@
 rake db:seed
-rails server
