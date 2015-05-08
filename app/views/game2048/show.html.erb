@@ -7,37 +7,95 @@
 <% else %>
     <p>Player 2's turn</p>
 <% end %>
+<style>
+    .dir.selected {
+        background-color: #b0c4de;
+    }
+    .val.selected {
+        background-color: #b0c4de;
+    }
+    .square.selected {
+        background-color: #b0c4de;
+    }
+    #pleasenopush{
+        display: none;
+    }
+</style>
+<div id="player">
+  <p>You</p>
 
-<div id="player1">
-  <p>Player 1</p>
   <p>
-    <% @display_board1.each do |r| %>
-        <%= r %><br>
-      <% end %>
-  </p>
-</div>
-<div id="player2">
-  <p>Player 2</p>
-  <p>
-    <% @display_board2.each do |r| %>
-        <%= r %><br>
+    <% for r in 0..3 %>
+        <% for c in 0..3 %>
+            <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+        <% end %><br>
     <% end %>
   </p>
 </div>
+<div id="dirup" class="dir selected" onclick="selectDir('up')">up</div>
+<div id="dirdown" class="dir" onclick="selectDir('down')">down</div>
+<div id="dirleft" class="dir" onclick="selectDir('left')">left</div>
+<div id="dirright" class="dir" onclick="selectDir('right')">right</div>
 
+<div id="opponent">
+  <p>Opponent</p>
 
-<%= form_tag("/game2048/move", method: "post") do %>
-  <%= label_tag(:dir, "Direction") %>
-  <%= text_field_tag(:dir) %>
+  <p>
+    <% first=true %>
+    <% for r in 0..3 %>
+        <% for c in 0..3 %>
+            <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+            <% first = false %>
+        <% end %><br>
+    <% end %>
+  </p>
+</div>
+<div id="piecechoices">
+  <div id="val1" class="val selected" onclick="selectVal(1)">1</div>
+  <div id="val2" class="val" onclick="selectVal(2)">2</div>
+</div>
+<div id="fakesubmit" onclick="postjs()">FAKESUBMIT</div>
+<script>
+    var selectedSquare = [0,0];
+    var selectedDir = "up";
+    var selectedVal = 1;
+    var selectSquare = function (r, c) {
+        document.querySelector("#opponent" + selectedSquare[0] + selectedSquare[1]).className = "square";
+        document.querySelector("#opponent" + r + c).className += " selected";
+        selectedSquare = [r, c];
+    };
+    var selectDir = function(dir){
+        document.querySelector("#dir"+selectedDir).className = "dir";
+        document.querySelector("#dir"+dir).className += " selected";
+        selectedDir = dir;
+    };
+    var selectVal = function(val){
+        document.querySelector("#val"+selectedVal).className = "dir";
+        document.querySelector("#val"+val).className += " selected";
+        selectedVal = val;
+    };
+    var postjs = function () {
+        document.querySelector("#dir").value = selectedDir;
+        document.querySelector("#row").value = selectedSquare[0];
+        document.querySelector("#col").value = selectedSquare[1];
+        document.querySelector("#val").value = selectedVal;
+        //submit form: http://stackoverflow.com/questions/8842723/how-do-i-submit-a-form-with-no-form-id-and-no-submit-id-but-known-hidden-value
+        var inputs = document.getElementsByTagName("input");
+        document.forms["pleasenopush"].submit();
+    };
+</script>
+<%= form_tag("/game2048/move", method: "post", id: "pleasenopush") do %>
+    <%= label_tag(:dir, "Direction") %>
+    <%= text_field_tag(:dir) %>
 
-  <%= label_tag(:row, "Row") %>
-  <%= text_field_tag(:row) %>
+    <%= label_tag(:row, "Row") %>
+    <%= text_field_tag(:row) %>
 
-  <%= label_tag(:col, "Column") %>
-  <%= text_field_tag(:col) %>
+    <%= label_tag(:col, "Column") %>
+    <%= text_field_tag(:col) %>
 
-  <%= label_tag(:val, "Value") %>
-  <%= text_field_tag(:val) %>
+    <%= label_tag(:val, "Value") %>
+    <%= text_field_tag(:val) %>
 
-  <%= submit_tag("Submit") %>
+    <%= submit_tag("Submit") %>
 <% end %>

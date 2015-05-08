@@ -81,12 +81,17 @@ class Board
       !(@board == board.board)
     end
 
-    Board.new(nboard)
+    Board.new(matrix: nboard)
   end
 
   def collapse_row(row)
     nrow =
-        (row.select { |e| if e then true else false end}.inject([]) { |acc, elem|
+        (row.select { |e|
+          if e then
+            true
+          else
+            false
+          end }.inject([]) { |acc, elem|
           if acc.length == 0
             [elem]
           elsif acc[0]
@@ -120,11 +125,11 @@ class Board
       end
     }
 
-    Board.new(nboard)
+    Board.new(matrix:nboard)
   end
 
   # TODO: Check usage: initialize(matrix: someMatrix, str: "esrf")
-  def initialize(matrix=nil, str=nil)
+  def initialize(matrix: nil, str: nil)
     if matrix
       @board = matrix
       # Make board from string held by model
@@ -132,10 +137,10 @@ class Board
     elsif str
       vals = str.split(",")
       @board = Matrix[
-          vals.slice(0,4).map  { |x| if x == '0' then false else x.to_i end },
-          vals.slice(4,4).map  { |x| if x == '0' then false else x.to_i end },
-          vals.slice(8,4).map  { |x| if x == '0' then false else x.to_i end },
-          vals.slice(12,4).map { |x| if x == '0' then false else x.to_i end }
+          vals.slice(0, 4).map { |x| x.to_i },
+          vals.slice(4, 4).map { |x| x.to_i },
+          vals.slice(8, 4).map { |x| x.to_i },
+          vals.slice(12, 4).map { |x| x.to_i }
       ]
     else
       @board = Matrix.build(4, 4) { |r, c|
@@ -162,11 +167,11 @@ class Game2048Controller < ApplicationController
   def print(model_board)
     vals = model_board.split(",")
     board_matrix = Matrix[
-    
-        vals.slice(0,4).map  { |x| x.to_i },
-        vals.slice(4,4).map  { |x| x.to_i },
-        vals.slice(8,4).map  { |x| x.to_i },
-        vals.slice(12,4).map { |x| x.to_i }
+
+        vals.slice(0, 4).map { |x| x.to_i },
+        vals.slice(4, 4).map { |x| x.to_i },
+        vals.slice(8, 4).map { |x| x.to_i },
+        vals.slice(12, 4).map { |x| x.to_i }
     ]
 
     result = []
@@ -190,8 +195,8 @@ class Game2048Controller < ApplicationController
     end
     @message = "Place your piece and move your board"
     # Print out boards
-    @display_board1 = print(@test.board1)
-    @display_board2 = print(@test.board2)
+    @playerboard = Board.new(str:((@test.player1turn) ? @test.board1 : @test.board2)).board
+    @opponentboard = Board.new(str:((@test.player1turn) ? @test.board2 : @test.board1)).board
   end
 
   # Move and place piece
@@ -206,11 +211,11 @@ class Game2048Controller < ApplicationController
 
     # Move and place piece must both be valid until turn ends
     if @test.player1turn
-      @test.board1 = Board.new(nil, @test.board1).apply_move(str2dir(dir)).to_s
-      @test.board2 = Board.new(nil, @test.board2).place_piece(row, col, val).to_s
+      @test.board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
+      @test.board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
     else
-      @test.board2 = Board.new(nil, @test.board2).apply_move(str2dir(dir)).to_s
-      @test.board1 = Board.new(nil, @test.board1).place_piece(row, col, val).to_s
+      @test.board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
+      @test.board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
     end
     @test.player1turn = !@test.player1turn
     @test.save
