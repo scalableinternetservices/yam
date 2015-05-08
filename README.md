@@ -1,5 +1,6 @@
 # Yam
 [![Build Status](https://travis-ci.org/scalableinternetservices/yam.svg?branch=master)](https://travis-ci.org/scalableinternetservices/yam)
+[![GPL License](https://img.shields.io/badge/license%20-%20GPLv3.0-blue.svg)](https://gnu.org/licenses/gpl.html)
 
 CS 188 | UCLA | Spring 2015
 
