@@ -67,6 +67,8 @@
 *.zip
 *.tar.gz
 *.tgz
+*.sublime-workspace
+*.sublime-project
 
 
 # Logs and databases #

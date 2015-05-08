@@ -1,7 +1,10 @@
+<div class="container">
 <h1>game2048#show</h1>
 
 <p><%= @message %></p>
 
+<br>
+<br>
 <% if @test.player1turn %>
     <p>Player 1's turn</p>
 <% else %>
@@ -37,6 +40,9 @@
 <div id="dirleft" class="dir" onclick="selectDir('left')">left</div>
 <div id="dirright" class="dir" onclick="selectDir('right')">right</div>
 
+
+<br>
+<br>
 <div id="opponent">
   <p>Opponent</p>
 
@@ -54,7 +60,7 @@
   <div id="val1" class="val selected" onclick="selectVal(1)">1</div>
   <div id="val2" class="val" onclick="selectVal(2)">2</div>
 </div>
-<div id="fakesubmit" onclick="postjs()">FAKESUBMIT</div>
+<div id="fakesubmit" onclick="postjs()">SUBMIT</div>
 <script>
     var selectedSquare = [0,0];
     var selectedDir = "up";
@@ -99,3 +105,4 @@
 
     <%= submit_tag("Submit") %>
 <% end %>
+</div>
