@@ -1,15 +1,14 @@
 <div class="container">
 <h1>game2048#show</h1>
 
-<p><%= @message %></p>
+<% if @cur_pid == @test.pid1 %>
+    <p><%= @test.msg1 %></p>
+<% else %>
+    <p><%= @test.msg2 %></p>
+<% end %>
 
 <br>
 <br>
-<% if @test.player1turn %>
-    <p>Player 1's turn</p>
-<% else %>
-    <p>Player 2's turn</p>
-<% end %>
 <style>
     .dir.selected {
         background-color: #b0c4de;

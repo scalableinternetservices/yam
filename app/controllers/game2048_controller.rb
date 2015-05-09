@@ -182,26 +182,38 @@ class Game2048Controller < ApplicationController
 
   # Display updated board
   def show
-    @test = Game2048.take
+    @test = Game2048.find_by_pid1(current_user.id)
+    if !@test
+      @test = Game2048.find_by_pid2(current_user.id)
+    end
     if !@test
       @test = Game2048.new
 
+      # TODO: take 2 users from waitlist instead of from all Users
+      players = User.all
       # Game2048 model has two string attributes,
       # to hold both the boards
       @test.board1 = Board.new.to_s
       @test.board2 = @test.board1
       @test.player1turn = true
+      @test.pid1 = players[0].id # TODO: pids of waitlisted users
+      @test.pid2 = players[1].id
+      @test.msg1 = "Player 1, it's your turn!"
+      @test.msg2 = "Player 2, it's not your turn."
       @test.save
     end
-    @message = "Place your piece and move your board"
     # Print out boards
     @playerboard = Board.new(str:((@test.player1turn) ? @test.board1 : @test.board2)).board
     @opponentboard = Board.new(str:((@test.player1turn) ? @test.board2 : @test.board1)).board
+    @cur_pid = current_user.id
   end
 
   # Move and place piece
   def move
-    @test = Game2048.take
+    @test = Game2048.find_by_pid1(current_user.id)
+    if !@test
+      @test = Game2048.find_by_pid2(current_user.id)
+    end
     # Params holds user input from POST request
     # TODO: game id's
     dir = params[:dir]
@@ -210,15 +222,21 @@ class Game2048Controller < ApplicationController
     val = params[:val].to_i
 
     # Move and place piece must both be valid until turn ends
-    if @test.player1turn
+    if @test.player1turn && (current_user.id == @test.pid1)
       @test.board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
       @test.board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
-    else
+      @test.player1turn = !@test.player1turn
+      @test.msg1 = "Player 1, it's not your turn."
+      @test.msg2 = "Player 2, it's your turn!"
+      @test.save
+    elsif !@test.player1turn && (current_user.id == @test.pid2)
       @test.board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
       @test.board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
+      @test.player1turn = !@test.player1turn
+      @test.msg1 = "Player 1, it's your turn!"
+      @test.msg2 = "Player 2, it's not your turn."
+      @test.save
     end
-    @test.player1turn = !@test.player1turn
-    @test.save
 
     # Redirect to show() to display updated board
     redirect_to action: "show"
