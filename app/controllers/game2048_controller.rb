@@ -87,16 +87,16 @@ class Board
   def collapse_row(row)
     nrow =
         (row.select { |e|
-          if e then
+          if e!=0
             true
           else
             false
           end }.inject([]) { |acc, elem|
           if acc.length == 0
             [elem]
-          elsif acc[0]
+          elsif acc[0]!=0
             if acc[0] == elem
-              [false, elem+1].concat(acc[1..-1])
+              [0, elem+1].concat(acc[1..-1])
             else
               acc.unshift(elem)
             end
@@ -117,7 +117,7 @@ class Board
   def place_piece(row, column, value)
     nboard = Matrix.build(4) { |r, c|
       # Matching coordinate and nothing already there
-      if r == row && c == column && !@board[r, c]
+      if r == row && c == column && @board[r, c]==0
         value
         # The rest of the board
       else

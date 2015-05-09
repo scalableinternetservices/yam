@@ -23,6 +23,7 @@
         display: none;
     }
 </style>
+<% if @test.pid1 == @cur_pid && @test.player1turn || @test.pid2 == @cur_pid && !@test.player1turn %>
 <div id="player">
   <p>You</p>
 
@@ -104,4 +105,8 @@
 
     <%= submit_tag("Submit") %>
 <% end %>
+<% else %>
+  <p>lol not ur turn</p>
+<% end %>
+
 </div>
