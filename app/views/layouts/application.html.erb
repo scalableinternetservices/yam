@@ -38,14 +38,18 @@
             </div>
             <button type="submit" class="btn btn-success">Sign in</button>
         -->
-	  <% if user_signed_in? %>
-  	  Logged in as <strong><%= current_user.email %></strong>.
+	<% if user_signed_in? %>
+	<div style="color:white; padding-top:5px;" class="container-fluid">  	  
+	Logged in as <strong><%= current_user.email %></strong>. 
   	<%= link_to 'Edit profile', edit_user_registration_path, :class => 'navbar-link' %> |
   	<%= link_to "Logout", destroy_user_session_path, method: :delete, :class => 'navbar-link'  %>
+	</div>
 	<% else %>
+	<div style="color:white; padding-top:5px;" class="container-fluid">
  	<%= link_to "Sign up", new_user_registration_path, :class => 'navbar-link'  %> |
   	<%= link_to "Login", new_user_session_path, :class => 'navbar-link'  %>
 	<% end %>  
+	</div>
 	</form>
         </div><!--/.navbar-collapse -->
       </div>

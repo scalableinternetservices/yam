@@ -1,11 +1,13 @@
 <div class="container">
-<h1>game2048#show</h1>
+<div class="center">
+<h1>Battle 2048</h1>
 
 <% if @cur_pid == @test.pid1 %>
     <p><%= @test.msg1 %></p>
 <% else %>
     <p><%= @test.msg2 %></p>
 <% end %>
+</div>
 
 <br>
 <br>
@@ -22,8 +24,15 @@
     #pleasenopush{
         display: none;
     }
+    .center {
+	text-align: center;
+    }
 </style>
 <% if @test.pid1 == @cur_pid && @test.player1turn || @test.pid2 == @cur_pid && !@test.player1turn %>
+
+<div class="container">
+<div class="row-fluid">
+<div class="col-sm-6" style="background-color:#C2FFC2">
 <div id="player">
   <p>You</p>
 
@@ -35,14 +44,25 @@
     <% end %>
   </p>
 </div>
-<div id="dirup" class="dir selected" onclick="selectDir('up')">up</div>
-<div id="dirdown" class="dir" onclick="selectDir('down')">down</div>
-<div id="dirleft" class="dir" onclick="selectDir('left')">left</div>
-<div id="dirright" class="dir" onclick="selectDir('right')">right</div>
 
+<button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')"> 
+  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+</button>
 
-<br>
-<br>
+<button id="dirdown" type="button" class="btn btn-default dir" aria-label="Down Button" onclick="selectDir('down')"> 
+  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+</button>
+
+<button id="dirleft" type="button" class="btn btn-default dir" aria-label="Left Button" onclick="selectDir('left')"> 
+  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+</button>
+
+<button id="dirright" type="button" class="btn btn-default dir" aria-label="Right Button" onclick="selectDir('right')"> 
+  <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+</button>
+</div>
+
+<div class="col-sm-6" style="background-color:#CCE6FF">
 <div id="opponent">
   <p>Opponent</p>
 
@@ -57,10 +77,21 @@
   </p>
 </div>
 <div id="piecechoices">
-  <div id="val1" class="val selected" onclick="selectVal(1)">1</div>
-  <div id="val2" class="val" onclick="selectVal(2)">2</div>
+
+  <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)"> 1 </button>
+
+  <button id="val2" type="button" class="btn btn-default val" aria-label="value 2" onclick="selectVal(2)"> 2 </button>
+
 </div>
-<div id="fakesubmit" onclick="postjs()">SUBMIT</div>
+</div>
+
+<div class="center">
+<button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+</div>
+
+</div>
+</div>
+
 <script>
     var selectedSquare = [0,0];
     var selectedDir = "up";
@@ -71,12 +102,12 @@
         selectedSquare = [r, c];
     };
     var selectDir = function(dir){
-        document.querySelector("#dir"+selectedDir).className = "dir";
+        document.querySelector("#dir"+selectedDir).className = "btn btn-default dir";
         document.querySelector("#dir"+dir).className += " selected";
         selectedDir = dir;
     };
     var selectVal = function(val){
-        document.querySelector("#val"+selectedVal).className = "dir";
+        document.querySelector("#val"+selectedVal).className = "btn btn-default val";
         document.querySelector("#val"+val).className += " selected";
         selectedVal = val;
     };
