@@ -296,11 +296,5 @@ class Game2048Controller < ApplicationController
 
       # TODO: Delete the pair from the waiting Lobby
     end
-
-    
-
-
-    
-    
   end
 end
