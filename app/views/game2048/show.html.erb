@@ -3,10 +3,20 @@
 <h1>Battle 2048</h1>
 
 <% if @cur_pid == @test.pid1 %>
-    <p><%= @test.msg1 %></p>
+    <p>
+	<h4><%= @test.msg1 %></h4>
+	You are currently playing <%= (User.find(@test.pid2)).email %>.
+    </p>
 <% else %>
-    <p><%= @test.msg2 %></p>
+    <p>
+	<h4><%= @test.msg2 %></h4>
+	You are currently playing <%= (User.find(@test.pid1)).email %>.
+    </p>
 <% end %>
+
+
+
+
 </div>
 
 <br>
