@@ -30,67 +30,67 @@
 </style>
 <% if @test.pid1 == @cur_pid && @test.player1turn || @test.pid2 == @cur_pid && !@test.player1turn %>
 
-<div class="container">
-<div class="row-fluid">
-<div class="col-sm-6" style="background-color:#C2FFC2">
-<div id="player">
-  <p>You</p>
+    <div class="container">
+    <div class="row-fluid">
+    <div class="col-sm-6" style="background-color:#C2FFC2">
+    <div id="player">
+      <p>You</p>
 
-  <p>
-    <% for r in 0..3 %>
-        <% for c in 0..3 %>
-            <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
-        <% end %><br>
-    <% end %>
-  </p>
-</div>
+      <p>
+        <% for r in 0..3 %>
+            <% for c in 0..3 %>
+                <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+            <% end %><br>
+        <% end %>
+      </p>
+    </div>
 
-<button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')"> 
-  <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-</button>
+    <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')"> 
+      <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+    </button>
 
-<button id="dirdown" type="button" class="btn btn-default dir" aria-label="Down Button" onclick="selectDir('down')"> 
-  <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-</button>
+    <button id="dirdown" type="button" class="btn btn-default dir" aria-label="Down Button" onclick="selectDir('down')"> 
+      <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+    </button>
 
-<button id="dirleft" type="button" class="btn btn-default dir" aria-label="Left Button" onclick="selectDir('left')"> 
-  <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-</button>
+    <button id="dirleft" type="button" class="btn btn-default dir" aria-label="Left Button" onclick="selectDir('left')"> 
+      <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+    </button>
 
-<button id="dirright" type="button" class="btn btn-default dir" aria-label="Right Button" onclick="selectDir('right')"> 
-  <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-</button>
-</div>
+    <button id="dirright" type="button" class="btn btn-default dir" aria-label="Right Button" onclick="selectDir('right')"> 
+      <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+    </button>
+    </div>
 
-<div class="col-sm-6" style="background-color:#CCE6FF">
-<div id="opponent">
-  <p>Opponent</p>
+    <div class="col-sm-6" style="background-color:#CCE6FF">
+    <div id="opponent">
+      <p>Opponent</p>
 
-  <p>
-    <% first=true %>
-    <% for r in 0..3 %>
-        <% for c in 0..3 %>
-            <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
-            <% first = false %>
-        <% end %><br>
-    <% end %>
-  </p>
-</div>
-<div id="piecechoices">
+      <p>
+        <% first=true %>
+        <% for r in 0..3 %>
+            <% for c in 0..3 %>
+                <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                <% first = false %>
+            <% end %><br>
+        <% end %>
+      </p>
+    </div>
+    <div id="piecechoices">
 
-  <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)"> 1 </button>
+      <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)"> 1 </button>
 
-  <button id="val2" type="button" class="btn btn-default val" aria-label="value 2" onclick="selectVal(2)"> 2 </button>
+      <button id="val2" type="button" class="btn btn-default val" aria-label="value 2" onclick="selectVal(2)"> 2 </button>
 
-</div>
-</div>
+    </div>
+    </div>
 
-<div class="center">
-<button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
-</div>
+    <div class="center">
+    <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+    </div>
 
-</div>
-</div>
+    </div>
+    </div>
 
 <script>
     var selectedSquare = [0,0];
@@ -136,8 +136,46 @@
 
     <%= submit_tag("Submit") %>
 <% end %>
-<% else %>
-  <p>lol not ur turn</p>
-<% end %>
 
+
+<!-- 
+Not the current player's turn. 
+Display board so they can strategize while waiting. 
+They cannot submit anything, however. 
+-->
+
+<% else %>
+  <div class="container">
+    <div class="row-fluid">
+    <div class="col-sm-6" style="background-color:#C2FFC2">
+    <div id="player">
+      <p>You</p>
+
+      <p>
+        <% for r in 0..3 %>
+            <% for c in 0..3 %>
+                <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+            <% end %><br>
+        <% end %>
+      </p>
+    </div>
+    </div>
+
+<div class="col-sm-6" style="background-color:#CCE6FF">
+<div id="opponent">
+  <p>Opponent</p>
+
+  <p>
+    <% first=true %>
+    <% for r in 0..3 %>
+        <% for c in 0..3 %>
+            <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+            <% first = false %>
+        <% end %><br>
+    <% end %>
+  </p>
+</div>
+</div>
+
+<% end %>
 </div>
