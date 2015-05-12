@@ -241,4 +241,13 @@ class Game2048Controller < ApplicationController
     # Redirect to show() to display updated board
     redirect_to action: "show"
   end
+
+  def make_match
+    Lobby2048.create(pid: current_user.id)
+    available = Lobby2048.where(taken: false)
+    while available.size < 2
+      available = Lobby2048.where(taken: false)
+    end
+    
+  end
 end
