@@ -242,12 +242,65 @@ class Game2048Controller < ApplicationController
     redirect_to action: "show"
   end
 
+  # Match-make current user with another ready user
   def make_match
+
+    # TODO: Add locking via ActiveRecord's lock()
+
+    # Add current user as ready-to-play
     Lobby2048.create(pid: current_user.id)
+
+    # Get list of all ready-to-play users
     available = Lobby2048.where(taken: false)
+
+    # Avoid loop if we're already taken
+    if Lobby2048.find_by_pid1(current_user.id).taken
+      redirect_to action: "show"
+    end
+
+    # Wait until we have at least one pair
     while available.size < 2
       available = Lobby2048.where(taken: false)
+
+      # If no users left to be paired, we're done here
+      break if available.size == 0 
     end
+
+    # Get a random available user that's not us
+    while true
+      player2 = available.sample
+      break if player2.id != current_user.id
+    end
+
+    # We have a basic locking system:
+    # If the other player is not yet taken, mark them and
+    # the current user as taken, then create a new game for them
+    # Abort at any point if current player is taken
+
+    # TODO: Is player2 guaranteed not taken by that earlier where()?
+    # TODO: Introduce variables to distinguish player references
+    if !(player2.taken) 
+      player2.taken = true
+      if Lobby2048.find_by_pid1(current_user.id).taken
+        player2.taken = false
+        redirect_to action: "show"
+      else
+        curPlayer = Lobby2048.find_by_pid1(current_user.id)
+        curPlayer.taken = true
+        # Create new Game2048 instance with selected pair
+        Game2048.create(pid1: current_user.id, pid2: player2.id,
+                        board1: Board.new.to_s, board2: Board.new.to_s,
+                        player1turn: true)
+
+      end
+
+      # TODO: Delete the pair from the waiting Lobby
+    end
+
+    
+
+
+    
     
   end
 end
