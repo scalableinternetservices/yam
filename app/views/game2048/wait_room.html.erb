@@ -1,0 +1,23 @@
+<h1>Please wait to join a game.</h1>
+<script>
+  var magicjsonstring = JSON.stringify(<%=  raw(@jsonstring) %>); // WOW SO UGGGGGGG
+          $(document).ready(function () {
+              console.log(magicjsonstring);
+              function loopUntilChange() {
+                  $.get('/game2048/match_json/?cachebuster='+(new Date().getTime()), function (data) {
+                      var newmagicstring = JSON.stringify(data);
+                      if (newmagicstring != magicjsonstring) {
+                          console.log("YAY GAME TIME")
+                          window.location.assign("/game2048/show")
+                      }
+                      else {
+                        console.log(newmagicstring);
+                          window.setTimeout(function () {
+                              loopUntilChange()
+                          }, 1000);
+                      }
+                  });
+              }
+              loopUntilChange();
+          });
+</script>
