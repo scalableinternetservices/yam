@@ -203,17 +203,22 @@ class Game2048Controller < ApplicationController
       @test.save
     end
     # Print out boards
+    @jsonstring = @test.to_json
     @playerboard = Board.new(str:((@test.player1turn) ? @test.board1 : @test.board2)).board
     @opponentboard = Board.new(str:((@test.player1turn) ? @test.board2 : @test.board1)).board
     @cur_pid = current_user.id
   end
-
+  def game_json
+    idk = Game2048.find_by_id(params[:id])
+    render(json: idk)
+  end
   # Move and place piece
   def move
     @test = Game2048.find_by_pid1(current_user.id)
     if !@test
       @test = Game2048.find_by_pid2(current_user.id)
     end
+    @jsonstring = @test.to_json
     # Params holds user input from POST request
     # TODO: game id's
     dir = params[:dir]

@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   devise_for :users
   get 'game2048/show'   # Display latest board
-  
+
+  get 'game2048/game_json'   # for AJAX. MAKE THIS POST WHEN YOU CAN FIGURE IT OUT.
+
   post 'game2048/move'  # Player submits move for board and places piece
                         # Redirect to play to show latest board state
 
