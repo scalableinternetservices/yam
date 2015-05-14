@@ -128,6 +128,12 @@ class Board
     Board.new(matrix:nboard)
   end
 
+  # Returns true if board is full (game over), otherwise false
+  def full
+    nboard.each { |e| return false if e == 0}
+    true # no empty spots
+  end
+
   # TODO: Check usage: initialize(matrix: someMatrix, str: "esrf")
   def initialize(matrix: nil, str: nil)
     if matrix
@@ -208,10 +214,12 @@ class Game2048Controller < ApplicationController
     @opponentboard = Board.new(str:((@test.player1turn) ? @test.board2 : @test.board1)).board
     @cur_pid = current_user.id
   end
+
   def game_json
     idk = Game2048.find_by_id(params[:id])
     render(json: idk)
   end
+
   # Move and place piece
   def move
     @test = Game2048.find_by_pid1(current_user.id)
@@ -230,7 +238,7 @@ class Game2048Controller < ApplicationController
     if @test.player1turn && (current_user.id == @test.pid1) # player 1's turn
       new_board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
       new_board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
-      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move. one of the boards didn't change
+      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
         @test.msg1 = "You made an invalid move."
       else
         @test.board1 = new_board1
@@ -241,9 +249,9 @@ class Game2048Controller < ApplicationController
       end
       @test.save
     elsif !@test.player1turn && (current_user.id == @test.pid2) # player 2's turn
-      new_board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
       new_board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
-      if @test.board2 == new_board2 || @test.board1 == new_board1 # p1 made an invalid move. one of the boards didn't change
+      new_board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
+      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
         @test.msg2 = "You made an invalid move."
       else
         @test.board1 = new_board1
@@ -252,6 +260,19 @@ class Game2048Controller < ApplicationController
         @test.msg1 = "It's your turn!"
         @test.msg2 = "It's not your turn."
       end
+      @test.save
+    end
+
+    # Check if game is over
+    if Board.new(str: @test.board1).full # board1 is full. p1 lost, p2 won
+      @test.game_over = true
+      @test.msg1 = "You lost."
+      @test.msg2 = "You won!"
+      @test.save
+    elsif Board.new(str: @test.board2).full # board2 is full. p1 won, p2 lost
+      @test.game_over = true
+      @test.msg1 = "You won!"
+      @test.msg2 = "You lost."
       @test.save
     end
 
@@ -313,5 +334,28 @@ class Game2048Controller < ApplicationController
 
       # TODO: Delete the pair from the waiting Lobby
     end
+  end
+
+  def end_game
+    # Retrieve game from db
+    @test = Game2048.find_by_pid1(current_user.id)
+    if !@test
+      @test = Game2048.find_by_pid2(current_user.id)
+    end
+
+    # Disassociate current player's pid from game
+    if current_user.id == @test.pid1
+      @test.pid1 = nil
+    else
+      @test.pid2 = nil
+    end
+    @test.save
+
+    # Delete game if both players are disassociated
+    if !@test.pid1 && !@test.pid2
+      Game2048.destroy(@test.id)
+    end
+
+    redirect_to action: "show"
   end
 end

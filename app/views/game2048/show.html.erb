@@ -33,8 +33,6 @@
         
         </p>
     <% end %>
-
-
   </div>
 
   <br>
@@ -121,7 +119,11 @@
           </div>
 
           <div class="center">
-            <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+            <% if @test.game_over %>
+                <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
+            <% else %>
+                <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+            <% end %>
           </div>
 
         </div>

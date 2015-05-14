@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   post 'game2048/move'  # Player submits move for board and places piece
                         # Redirect to play to show latest board state
 
+  post 'game2048/end_game' # End the game
+
   get 'static_pages/home'
 
   resources :games
