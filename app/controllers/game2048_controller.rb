@@ -287,19 +287,31 @@ class Game2048Controller < ApplicationController
     val = params[:val].to_i
 
     # Move and place piece must both be valid until turn ends
-    if @test.player1turn && (current_user.id == @test.pid1)
-      @test.board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
-      @test.board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
-      @test.player1turn = !@test.player1turn
-      @test.msg1 = "Player 1, it's not your turn."
-      @test.msg2 = "Player 2, it's your turn!"
+    if @test.player1turn && (current_user.id == @test.pid1) # player 1's turn
+      new_board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
+      new_board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
+      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move. one of the boards didn't change
+        @test.msg1 = "You made an invalid move."
+      else
+        @test.board1 = new_board1
+        @test.board2 = new_board2
+        @test.player1turn = !@test.player1turn
+        @test.msg1 = "It's not your turn."
+        @test.msg2 = "It's your turn!"
+      end
       @test.save
-    elsif !@test.player1turn && (current_user.id == @test.pid2)
-      @test.board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
-      @test.board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
-      @test.player1turn = !@test.player1turn
-      @test.msg1 = "Player 1, it's your turn!"
-      @test.msg2 = "Player 2, it's not your turn."
+    elsif !@test.player1turn && (current_user.id == @test.pid2) # player 2's turn
+      new_board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
+      new_board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
+      if @test.board2 == new_board2 || @test.board1 == new_board1 # p1 made an invalid move. one of the boards didn't change
+        @test.msg2 = "You made an invalid move."
+      else
+        @test.board1 = new_board1
+        @test.board2 = new_board2
+        @test.player1turn = !@test.player1turn
+        @test.msg1 = "It's your turn!"
+        @test.msg2 = "It's not your turn."
+      end
       @test.save
     end
 
