@@ -5,12 +5,32 @@
     <% if @cur_pid == @test.pid1 %>
         <p>
         <h4><%= @test.msg1 %></h4>
-        You are currently playing <%= (User.find(@test.pid2)).email %>.
+
+        <% begin %>
+        <% user2 = User.find(@test.pid2) %>
+        <% rescue %>
+          <% user2 = nil %>
+        <% end %>
+
+        <% if user2.class != nil.class %>
+          You are currently playing <%= user2.email %>.
+        <% end %>
+
         </p>
     <% else %>
         <p>
         <h4><%= @test.msg2 %></h4>
-        You are currently playing <%= (User.find(@test.pid1)).email %>.
+
+        <% begin %>
+        <% user1 = User.find(@test.pid1) %>
+        <% rescue %>
+          <% user1 = nil %>
+        <% end %>
+
+        <% if user1.class != nil.class %>
+          You are currently playing <%= (User.find(@test.pid1)).email %>.
+        <% end %>
+        
         </p>
     <% end %>
 
