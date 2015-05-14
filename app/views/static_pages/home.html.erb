@@ -14,7 +14,7 @@
           <h2>2048 Battle</h2>
           <p>2048 Battle is an intense match of wit and an interesting twist on the viral game 2048! Compete with other players as you try to reach 2048 while sabatoging your opponent's board! Try not to mess up!</p>
 	</br>
-          <p><a class="btn btn-default" href="/game2048/show" role="button">PLAY &raquo;</a></p>
+          <div class="btn btn-default" onclick="joinMatch()" role="button">PLAY &raquo;</div>
         </div>
         <div class="col-md-4"> 
           <h2>User Profiles</h2>
@@ -30,7 +30,16 @@
       </div>
 
       <hr>
-
+      <script>
+      var joinMatch = function(){
+        document.forms["pleasenopush"].submit();
+      }
+      </script>
+      <div id="realform" style="display: none">
+          <%= form_tag("/game2048/join_match", method: "post", id: "pleasenopush") do %>
+          <%= submit_tag("Submit") %>
+      <% end %>
+      </div>
       <footer>
         <p>&copy; YAM Inc. 2015</p>
       </footer>

@@ -192,22 +192,7 @@ class Game2048Controller < ApplicationController
     if !@test
       @test = Game2048.find_by_pid2(current_user.id)
     end
-    if !@test
-      @test = Game2048.new
 
-      # TODO: take 2 users from waitlist instead of from all Users
-      players = User.all
-      # Game2048 model has two string attributes,
-      # to hold both the boards
-      @test.board1 = Board.new.to_s
-      @test.board2 = @test.board1
-      @test.player1turn = true
-      @test.pid1 = players[0].id # TODO: pids of waitlisted users
-      @test.pid2 = players[1].id
-      @test.msg1 = "It's your turn!"
-      @test.msg2 = "It's not your turn."
-      @test.save
-    end
     # Print out boards
     @jsonstring = @test.to_json
     @playerboard = Board.new(str:((@test.player1turn) ? @test.board1 : @test.board2)).board
@@ -217,6 +202,61 @@ class Game2048Controller < ApplicationController
 
   def game_json
     idk = Game2048.find_by_id(params[:id])
+    render(json: idk)
+  end
+
+  def match_json
+    in_game = Game2048.find_by_pid1(current_user.id)
+
+    if !in_game
+      in_game = Game2048.find_by_pid2(current_user.id)
+    end
+
+    # Player is already in a game
+    if in_game
+      idk = {"in_match" => "yes"}
+      render(json: idk)
+      return
+    end
+
+    player1 = nil
+    begin
+      player1 = Lobby2048.find_by_pid(current_user.id)
+      if player1.taken
+        idk = {"in_match" => "no"}
+        render(json: idk)
+        return
+      end
+    # Current user not in database
+    rescue
+      idk = {"in_match" => "no"}
+      render(json: idk)
+      return
+    end
+
+    # Need at least one other available user who is not current user
+    available = Lobby2048.where(taken: false).select { |x| x.pid != current_user.id }
+
+    if available.size >= 1
+      player2 = available.sample
+      player2.taken = true
+      player2.save
+
+      player1.taken = true
+      player1.save
+
+      Game2048.create(pid1: current_user.id, pid2: player2.pid,
+                        board1: Board.new.to_s, board2: Board.new.to_s,
+                        player1turn: true)
+
+      Lobby2048.find_by_pid(current_user.id).destroy
+      Lobby2048.find_by_pid(player2.pid).destroy
+
+      idk = {"in_match" => "yes"}
+    else
+      idk = {"in_match" => "no"}
+    end
+
     render(json: idk)
   end
 
@@ -281,59 +321,33 @@ class Game2048Controller < ApplicationController
   end
 
   # Match-make current user with another ready user
-  def make_match
-
-    # TODO: Add locking via ActiveRecord's lock()
-
-    # Add current user as ready-to-play
-    Lobby2048.create(pid: current_user.id)
-
-    # Get list of all ready-to-play users
-    available = Lobby2048.where(taken: false)
-
-    # Avoid loop if we're already taken
-    if Lobby2048.find_by_pid1(current_user.id).taken
-      redirect_to action: "show"
+  def join_match
+    begin 
+    # If already in-game, redirect to it
+    in_game = Game2048.find_by_pid1(current_user.id)
+    rescue
     end
 
-    # Wait until we have at least one pair
-    while available.size < 2
-      available = Lobby2048.where(taken: false)
-
-      # If no users left to be paired, we're done here
-      break if available.size == 0 
-    end
-
-    # Get a random available user that's not us
-    while true
-      player2 = available.sample
-      break if player2.id != current_user.id
-    end
-
-    # We have a basic locking system:
-    # If the other player is not yet taken, mark them and
-    # the current user as taken, then create a new game for them
-    # Abort at any point if current player is taken
-
-    # TODO: Is player2 guaranteed not taken by that earlier where()?
-    # TODO: Introduce variables to distinguish player references
-    if !(player2.taken) 
-      player2.taken = true
-      if Lobby2048.find_by_pid1(current_user.id).taken
-        player2.taken = false
-        redirect_to action: "show"
-      else
-        curPlayer = Lobby2048.find_by_pid1(current_user.id)
-        curPlayer.taken = true
-        # Create new Game2048 instance with selected pair
-        Game2048.create(pid1: current_user.id, pid2: player2.id,
-                        board1: Board.new.to_s, board2: Board.new.to_s,
-                        player1turn: true)
-
+    begin
+      if !in_game
+        in_game = Game2048.find_by_pid2(current_user.id)
       end
-
-      # TODO: Delete the pair from the waiting Lobby
+    rescue
     end
+
+    if in_game
+      redirect_to action: "show"
+    else
+        Lobby2048.create(pid: current_user.id)
+        redirect_to action: "wait_room"
+    end
+    # If not already in game, redirect to waiting room, 
+    # and AJAX there will continuously try to create a 
+    # new game to join via match_json
+  end
+
+  def wait_room
+    @jsonstring = ({"in_match" => "no"}).to_json
   end
 
   def end_game
