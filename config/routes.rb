@@ -4,6 +4,12 @@ Rails.application.routes.draw do
 
   get 'game2048/game_json'   # for AJAX. MAKE THIS POST WHEN YOU CAN FIGURE IT OUT.
 
+  get 'game2048/match_json'  # AJAX will check this for joining game2048
+
+  post 'game2048/join_match'  # Join a new game or existing one
+
+  get 'game2048/wait_room'
+
   post 'game2048/move'  # Player submits move for board and places piece
                         # Redirect to play to show latest board state
 
