@@ -45,31 +45,31 @@ class Board
     case move
       when :up
         nboard = Matrix.columns([
-                                    collapse_row(@board.column(0)),
-                                    collapse_row(@board.column(1)),
-                                    collapse_row(@board.column(2)),
-                                    collapse_row(@board.column(3))
-                                ])
+          collapse_row(@board.column(0)),
+          collapse_row(@board.column(1)),
+          collapse_row(@board.column(2)),
+          collapse_row(@board.column(3))
+        ])
       when :down
         nboard = Matrix.columns([
-                                    collapse_row(@board.column(0).to_a.reverse).reverse,
-                                    collapse_row(@board.column(1).to_a.reverse).reverse,
-                                    collapse_row(@board.column(2).to_a.reverse).reverse,
-                                    collapse_row(@board.column(3).to_a.reverse).reverse
-                                ])
+          collapse_row(@board.column(0).to_a.reverse).reverse,
+          collapse_row(@board.column(1).to_a.reverse).reverse,
+          collapse_row(@board.column(2).to_a.reverse).reverse,
+          collapse_row(@board.column(3).to_a.reverse).reverse
+        ])
       when :left
         nboard = Matrix[
-            collapse_row(@board.row(0)),
-            collapse_row(@board.row(1)),
-            collapse_row(@board.row(2)),
-            collapse_row(@board.row(3))
+          collapse_row(@board.row(0)),
+          collapse_row(@board.row(1)),
+          collapse_row(@board.row(2)),
+          collapse_row(@board.row(3))
         ]
       when :right
         nboard = Matrix[
-            collapse_row(@board.row(0).to_a.reverse).reverse,
-            collapse_row(@board.row(1).to_a.reverse).reverse,
-            collapse_row(@board.row(2).to_a.reverse).reverse,
-            collapse_row(@board.row(3).to_a.reverse).reverse
+          collapse_row(@board.row(0).to_a.reverse).reverse,
+          collapse_row(@board.row(1).to_a.reverse).reverse,
+          collapse_row(@board.row(2).to_a.reverse).reverse,
+          collapse_row(@board.row(3).to_a.reverse).reverse
         ]
       # TODO: todofunction adds another symbol
       # for when move is invalid, and user must try again
@@ -130,7 +130,7 @@ class Board
 
   # Returns true if board is full (game over), otherwise false
   def full
-    nboard.each { |e| return false if e == 0}
+    @board.each { |e| return false if e == 0}
     true # no empty spots
   end
 
@@ -188,15 +188,15 @@ class Game2048Controller < ApplicationController
 
   # Display updated board
   def show
-    @test = Game2048.find_by_pid1(current_user.id)
-    if !@test
-      @test = Game2048.find_by_pid2(current_user.id)
+    @game = Game2048.find_by_pid1(current_user.id)
+    if !@game
+      @game = Game2048.find_by_pid2(current_user.id)
     end
 
     # Print out boards
-    @jsonstring = @test.to_json
-    @playerboard = Board.new(str:((@test.player1turn) ? @test.board1 : @test.board2)).board
-    @opponentboard = Board.new(str:((@test.player1turn) ? @test.board2 : @test.board1)).board
+    @jsonstring = @game.to_json
+    @playerboard = Board.new(str:((current_user.id == @game.pid1) ? @game.board1 : @game.board2)).board
+    @opponentboard = Board.new(str:((current_user.id == @game.pid1) ? @game.board2 : @game.board1)).board
     @cur_pid = current_user.id
   end
 
@@ -262,11 +262,11 @@ class Game2048Controller < ApplicationController
 
   # Move and place piece
   def move
-    @test = Game2048.find_by_pid1(current_user.id)
-    if !@test
-      @test = Game2048.find_by_pid2(current_user.id)
+    @game = Game2048.find_by_pid1(current_user.id)
+    if !@game
+      @game = Game2048.find_by_pid2(current_user.id)
     end
-    @jsonstring = @test.to_json
+    @jsonstring = @game.to_json
     # Params holds user input from POST request
     # TODO: game id's
     dir = params[:dir]
@@ -275,45 +275,45 @@ class Game2048Controller < ApplicationController
     val = params[:val].to_i
 
     # Move and place piece must both be valid until turn ends
-    if @test.player1turn && (current_user.id == @test.pid1) # player 1's turn
-      new_board1 = Board.new(str: @test.board1).apply_move(str2dir(dir)).to_s
-      new_board2 = Board.new(str: @test.board2).place_piece(row, col, val).to_s
-      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
-        @test.msg1 = "You made an invalid move."
+    if @game.player1turn && (current_user.id == @game.pid1) # player 1's turn
+      new_board1 = Board.new(str: @game.board1).apply_move(str2dir(dir)).to_s
+      new_board2 = Board.new(str: @game.board2).place_piece(row, col, val).to_s
+      if @game.board1 == new_board1 || @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
+        @game.msg1 = "You made an invalid move."
       else
-        @test.board1 = new_board1
-        @test.board2 = new_board2
-        @test.player1turn = !@test.player1turn
-        @test.msg1 = "It's not your turn."
-        @test.msg2 = "It's your turn!"
+        @game.board1 = new_board1
+        @game.board2 = new_board2
+        @game.player1turn = !@game.player1turn
+        @game.msg1 = "It's not your turn."
+        @game.msg2 = "It's your turn!"
       end
-      @test.save
-    elsif !@test.player1turn && (current_user.id == @test.pid2) # player 2's turn
-      new_board1 = Board.new(str: @test.board1).place_piece(row, col, val).to_s
-      new_board2 = Board.new(str: @test.board2).apply_move(str2dir(dir)).to_s
-      if @test.board1 == new_board1 || @test.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
-        @test.msg2 = "You made an invalid move."
+      @game.save
+    elsif !@game.player1turn && (current_user.id == @game.pid2) # player 2's turn
+      new_board1 = Board.new(str: @game.board1).place_piece(row, col, val).to_s
+      new_board2 = Board.new(str: @game.board2).apply_move(str2dir(dir)).to_s
+      if @game.board1 == new_board1 || @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
+        @game.msg2 = "You made an invalid move."
       else
-        @test.board1 = new_board1
-        @test.board2 = new_board2
-        @test.player1turn = !@test.player1turn
-        @test.msg1 = "It's your turn!"
-        @test.msg2 = "It's not your turn."
+        @game.board1 = new_board1
+        @game.board2 = new_board2
+        @game.player1turn = !@game.player1turn
+        @game.msg1 = "It's your turn!"
+        @game.msg2 = "It's not your turn."
       end
-      @test.save
+      @game.save
     end
 
     # Check if game is over
-    if Board.new(str: @test.board1).full # board1 is full. p1 lost, p2 won
-      @test.game_over = true
-      @test.msg1 = "You lost."
-      @test.msg2 = "You won!"
-      @test.save
-    elsif Board.new(str: @test.board2).full # board2 is full. p1 won, p2 lost
-      @test.game_over = true
-      @test.msg1 = "You won!"
-      @test.msg2 = "You lost."
-      @test.save
+    if Board.new(str: @game.board1).full # board1 is full. p1 lost, p2 won
+      @game.game_over = true
+      @game.msg1 = "You lost."
+      @game.msg2 = "You won!"
+      @game.save
+    elsif Board.new(str: @game.board2).full # board2 is full. p1 won, p2 lost
+      @game.game_over = true
+      @game.msg1 = "You won!"
+      @game.msg2 = "You lost."
+      @game.save
     end
 
     # Redirect to show() to display updated board
@@ -352,24 +352,24 @@ class Game2048Controller < ApplicationController
 
   def end_game
     # Retrieve game from db
-    @test = Game2048.find_by_pid1(current_user.id)
-    if !@test
-      @test = Game2048.find_by_pid2(current_user.id)
+    @game = Game2048.find_by_pid1(current_user.id)
+    if !@game
+      @game = Game2048.find_by_pid2(current_user.id)
     end
 
     # Disassociate current player's pid from game
-    if current_user.id == @test.pid1
-      @test.pid1 = nil
+    if current_user.id == @game.pid1
+      @game.pid1 = nil
     else
-      @test.pid2 = nil
+      @game.pid2 = nil
     end
-    @test.save
+    @game.save
 
     # Delete game if both players are disassociated
-    if !@test.pid1 && !@test.pid2
-      Game2048.destroy(@test.id)
+    if !@game.pid1 && !@game.pid2
+      Game2048.destroy(@game.id)
     end
 
-    redirect_to action: "show"
+    join_match
   end
 end

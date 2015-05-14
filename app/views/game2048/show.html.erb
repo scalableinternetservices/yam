@@ -2,12 +2,12 @@
   <div class="center">
     <h1>Battle 2048</h1>
 
-    <% if @cur_pid == @test.pid1 %>
+    <% if @cur_pid == @game.pid1 %>
         <p>
-        <h4><%= @test.msg1 %></h4>
+        <h4><%= @game.msg1 %></h4>
 
         <% begin %>
-        <% user2 = User.find(@test.pid2) %>
+        <% user2 = User.find(@game.pid2) %>
         <% rescue %>
           <% user2 = nil %>
         <% end %>
@@ -19,16 +19,16 @@
         </p>
     <% else %>
         <p>
-        <h4><%= @test.msg2 %></h4>
+        <h4><%= @game.msg2 %></h4>
 
         <% begin %>
-        <% user1 = User.find(@test.pid1) %>
+        <% user1 = User.find(@game.pid1) %>
         <% rescue %>
           <% user1 = nil %>
         <% end %>
 
         <% if user1.class != nil.class %>
-          You are currently playing <%= (User.find(@test.pid1)).email %>.
+          You are currently playing <%= (User.find(@game.pid1)).email %>.
         <% end %>
         
         </p>
@@ -58,7 +58,7 @@
           text-align: center;
       }
   </style>
-  <% if @test.pid1 == @cur_pid && @test.player1turn || @test.pid2 == @cur_pid && !@test.player1turn %>
+  <% if @game.pid1 == @cur_pid && @game.player1turn || @game.pid2 == @cur_pid && !@game.player1turn %>
       <div class="container">
         <div class="row-fluid">
           <div class="col-sm-6" style="background-color:#C2FFC2">
@@ -119,7 +119,7 @@
           </div>
 
           <div class="center">
-            <% if @test.game_over %>
+            <% if @game.game_over %>
                 <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
             <% else %>
                 <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
@@ -184,7 +184,7 @@
           $(document).ready(function () {
               console.log("started looking for new boards");
               function loopUntilChange() {
-                  $.get('/game2048/game_json/?cachebuster='+(new Date().getTime()), {id: <%= @test.id %>}, function (data) {
+                  $.get('/game2048/game_json/?cachebuster='+(new Date().getTime()), {id: <%= @game.id %>}, function (data) {
                       var newmagicstring = JSON.stringify(data);
                       if (newmagicstring != magicjsonstring) {
                           location.reload(true); // forces cache ignore
@@ -232,6 +232,11 @@
               </p>
             </div>
           </div>
+        </div>
+        <div class="center">
+          <% if @game.game_over %>
+              <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
+          <% end %>
         </div>
       </div>
 
