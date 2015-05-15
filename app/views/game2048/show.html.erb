@@ -1,3 +1,4 @@
+<link rel="stylesheet" type="text/css" href="css/game_2048view.css">
 <div class="container">
   <div class="center">
     <h1>Battle 2048</h1>
@@ -66,12 +67,12 @@
       <div class="row-fluid">
         <div class="col-sm-6" style="background-color:#C2FFC2">
           <div id="player">
-            <p>You</p>
+            <p class="who">You</p>
 
             <p>
               <% for r in 0..3 %>
                   <% for c in 0..3 %>
-                      <span id="player<%= "#{r}#{c}" %>" class="square num<%= @playerboard[r, c] %> unselected"><%= @playerboard[r, c] %></span>
+                      <span id="player<%= "#{r}#{c}" %>" class="square num<%= @playerboard[r, c] %> unselected grid tile"><%= @playerboard[r, c] %></span>
                   <% end %><br>
               <% end %>
             </p>
@@ -96,13 +97,13 @@
 
         <div class="col-sm-6" style="background-color:#CCE6FF">
           <div id="opponent">
-            <p>Opponent</p>
+            <p class="who">Opponent</p>
 
             <p>
               <% first=true %>
               <% for r in 0..3 %>
                   <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %> grid tile" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
                       <% first = false %>
                   <% end %><br>
               <% end %>
@@ -209,14 +210,14 @@
           });
       </script>
       <div class="row-fluid">
-        <div class="col-sm-6" style="background-color:#C2FFC2">
+        <div class="col-sm-6" style="background-color:#C2FFC2; text-align: center;">
           <div id="player">
-            <p>You</p>
+            <p class="who">You</p>
 
-            <p>
+            <p class="padding">
               <% for r in 0..3 %>
                   <% for c in 0..3 %>
-                      <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+                      <span class= "grid tile" id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
                   <% end %><br>
               <% end %>
             </p>
@@ -225,12 +226,12 @@
 
         <div class="col-sm-6" style="background-color:#CCE6FF">
           <div id="opponent">
-            <p>Opponent</p>
+            <p class="who">Opponent</p>
 
             <p>
               <% for r in 0..3 %>
                   <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> unselected" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> unselected grid tile" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
                       <% first = false %>
                   <% end %><br>
               <% end %>
