@@ -30,13 +30,17 @@
         <% if user1.class != nil.class %>
           You are currently playing <%= (User.find(@game.pid1)).email %>.
         <% end %>
-        
+
         </p>
     <% end %>
   </div>
 
+  <div class="center">
+    <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
+  </div>
+
   <br>
-  <br>
+
   <style>
       .dir.selected {
           background-color: #b0c4de;
@@ -58,187 +62,175 @@
           text-align: center;
       }
   </style>
-  <% if @game.pid1 == @cur_pid && @game.player1turn || @game.pid2 == @cur_pid && !@game.player1turn %>
-      <div class="container">
-        <div class="row-fluid">
-          <div class="col-sm-6" style="background-color:#C2FFC2">
-            <div id="player">
-              <p>You</p>
+  <% if !@game.game_over && (@game.pid1 == @cur_pid && @game.player1turn || @game.pid2 == @cur_pid && !@game.player1turn) %>
+    <div class="row-fluid">
+      <div class="col-sm-6" style="background-color:#C2FFC2">
+        <div id="player">
+          <p>You</p>
 
-              <p>
-                <% for r in 0..3 %>
-                    <% for c in 0..3 %>
-                        <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
-                    <% end %><br>
-                <% end %>
-              </p>
-            </div>
-
-            <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')">
-              <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-            </button>
-
-            <button id="dirdown" type="button" class="btn btn-default dir" aria-label="Down Button" onclick="selectDir('down')">
-              <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-            </button>
-
-            <button id="dirleft" type="button" class="btn btn-default dir" aria-label="Left Button" onclick="selectDir('left')">
-              <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-            </button>
-
-            <button id="dirright" type="button" class="btn btn-default dir" aria-label="Right Button" onclick="selectDir('right')">
-              <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-            </button>
-          </div>
-
-          <div class="col-sm-6" style="background-color:#CCE6FF">
-            <div id="opponent">
-              <p>Opponent</p>
-
-              <p>
-                <% first=true %>
-                <% for r in 0..3 %>
-                    <% for c in 0..3 %>
-                        <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
-                        <% first = false %>
-                    <% end %><br>
-                <% end %>
-              </p>
-            </div>
-            <div id="piecechoices">
-
-              <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)">
-                1
-              </button>
-
-              <button id="val2" type="button" class="btn btn-default val" aria-label="value 2" onclick="selectVal(2)">
-                2
-              </button>
-
-            </div>
-          </div>
-
-          <div class="center">
-            <% if @game.game_over %>
-                <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
-            <% else %>
-                <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+          <p>
+            <% for r in 0..3 %>
+                <% for c in 0..3 %>
+                    <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+                <% end %><br>
             <% end %>
-          </div>
+          </p>
+        </div>
+
+        <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')">
+          <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+        </button>
+
+        <button id="dirdown" type="button" class="btn btn-default dir" aria-label="Down Button" onclick="selectDir('down')">
+          <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+        </button>
+
+        <button id="dirleft" type="button" class="btn btn-default dir" aria-label="Left Button" onclick="selectDir('left')">
+          <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        </button>
+
+        <button id="dirright" type="button" class="btn btn-default dir" aria-label="Right Button" onclick="selectDir('right')">
+          <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="col-sm-6" style="background-color:#CCE6FF">
+        <div id="opponent">
+          <p>Opponent</p>
+
+          <p>
+            <% first=true %>
+            <% for r in 0..3 %>
+                <% for c in 0..3 %>
+                    <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                    <% first = false %>
+                <% end %><br>
+            <% end %>
+          </p>
+        </div>
+        <div id="piecechoices">
+
+          <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)">
+            1
+          </button>
+
+          <button id="val2" type="button" class="btn btn-default val" aria-label="value 2" onclick="selectVal(2)">
+            2
+          </button>
 
         </div>
       </div>
 
-      <script>
-          var selectedSquare = [0, 0];
-          var selectedDir = "up";
-          var selectedVal = 1;
-          var selectSquare = function (r, c) {
-              document.querySelector("#opponent" + selectedSquare[0] + selectedSquare[1]).className = "square";
-              document.querySelector("#opponent" + r + c).className += " selected";
-              selectedSquare = [r, c];
-          };
-          var selectDir = function (dir) {
-              document.querySelector("#dir" + selectedDir).className = "btn btn-default dir";
-              document.querySelector("#dir" + dir).className += " selected";
-              selectedDir = dir;
-          };
-          var selectVal = function (val) {
-              document.querySelector("#val" + selectedVal).className = "btn btn-default val";
-              document.querySelector("#val" + val).className += " selected";
-              selectedVal = val;
-          };
-          var postjs = function () {
-              document.querySelector("#dir").value = selectedDir;
-              document.querySelector("#row").value = selectedSquare[0];
-              document.querySelector("#col").value = selectedSquare[1];
-              document.querySelector("#val").value = selectedVal;
-              //submit form: http://stackoverflow.com/questions/8842723/how-do-i-submit-a-form-with-no-form-id-and-no-submit-id-but-known-hidden-value
-              var inputs = document.getElementsByTagName("input");
-              document.forms["pleasenopush"].submit();
-          };
-      </script>
-      <%= form_tag("/game2048/move", method: "post", id: "pleasenopush") do %>
-          <%= label_tag(:dir, "Direction") %>
-          <%= text_field_tag(:dir) %>
-
-          <%= label_tag(:row, "Row") %>
-          <%= text_field_tag(:row) %>
-
-          <%= label_tag(:col, "Column") %>
-          <%= text_field_tag(:col) %>
-
-          <%= label_tag(:val, "Value") %>
-          <%= text_field_tag(:val) %>
-
-          <%= submit_tag("Submit") %>
+      <% if !@game.game_over %>
+          <div class="center">
+            <button id="fakesubmit" class="btn btn-primary" onclick="postjs()">SUBMIT</button>
+          </div>
       <% end %>
-  <% else %>
-      <!--
-        Not the current player's turn.
-        Display board so they can strategize while waiting.
-        They cannot submit anything, however.
-      -->
-      <script>
-          var magicjsonstring = JSON.stringify(<%=  raw(@jsonstring) %>); // WOW SO UGGGGGGG
-          $(document).ready(function () {
-              console.log("started looking for new boards");
-              function loopUntilChange() {
-                  $.get('/game2048/game_json/?cachebuster='+(new Date().getTime()), {id: <%= @game.id %>}, function (data) {
-                      var newmagicstring = JSON.stringify(data);
-                      if (newmagicstring != magicjsonstring) {
-                          location.reload(true); // forces cache ignore
-                      }
-                      else {
-                          console.log("Same board");
-                          window.setTimeout(function () {
-                              loopUntilChange()
-                          }, 1000);
-                      }
-                  });
-              }
 
-              loopUntilChange();
-          });
-      </script>
-      <div class="container">
-        <div class="row-fluid">
-          <div class="col-sm-6" style="background-color:#C2FFC2">
-            <div id="player">
-              <p>You</p>
+    </div>
+  </div>
 
-              <p>
-                <% for r in 0..3 %>
-                    <% for c in 0..3 %>
-                        <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
-                    <% end %><br>
-                <% end %>
-              </p>
-            </div>
-          </div>
+  <script>
+      var selectedSquare = [0, 0];
+      var selectedDir = "up";
+      var selectedVal = 1;
+      var selectSquare = function (r, c) {
+          document.querySelector("#opponent" + selectedSquare[0] + selectedSquare[1]).className = "square";
+          document.querySelector("#opponent" + r + c).className += " selected";
+          selectedSquare = [r, c];
+      };
+      var selectDir = function (dir) {
+          document.querySelector("#dir" + selectedDir).className = "btn btn-default dir";
+          document.querySelector("#dir" + dir).className += " selected";
+          selectedDir = dir;
+      };
+      var selectVal = function (val) {
+          document.querySelector("#val" + selectedVal).className = "btn btn-default val";
+          document.querySelector("#val" + val).className += " selected";
+          selectedVal = val;
+      };
+      var postjs = function () {
+          document.querySelector("#dir").value = selectedDir;
+          document.querySelector("#row").value = selectedSquare[0];
+          document.querySelector("#col").value = selectedSquare[1];
+          document.querySelector("#val").value = selectedVal;
+          //submit form: http://stackoverflow.com/questions/8842723/how-do-i-submit-a-form-with-no-form-id-and-no-submit-id-but-known-hidden-value
+          var inputs = document.getElementsByTagName("input");
+          document.forms["pleasenopush"].submit();
+      };
+  </script>
+  <%= form_tag("/game2048/move", method: "post", id: "pleasenopush") do %>
+      <%= label_tag(:dir, "Direction") %>
+      <%= text_field_tag(:dir) %>
 
-          <div class="col-sm-6" style="background-color:#CCE6FF">
-            <div id="opponent">
-              <p>Opponent</p>
+      <%= label_tag(:row, "Row") %>
+      <%= text_field_tag(:row) %>
 
-              <p>
-                <% first=true %>
-                <% for r in 0..3 %>
-                    <% for c in 0..3 %>
-                        <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
-                        <% first = false %>
-                    <% end %><br>
-                <% end %>
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="center">
-          <% if @game.game_over %>
-              <%= button_to "New Game", { action: "end_game" }, class: "btn btn-success" %>
-          <% end %>
+      <%= label_tag(:col, "Column") %>
+      <%= text_field_tag(:col) %>
+
+      <%= label_tag(:val, "Value") %>
+      <%= text_field_tag(:val) %>
+
+      <%= submit_tag("Submit") %>
+  <% end %>
+<% else %>
+  <!--
+    Not the current player's turn.
+    Display board so they can strategize while waiting.
+    They cannot submit anything, however.
+  -->
+  <script>
+      var magicjsonstring = JSON.stringify(<%=  raw(@jsonstring) %>); // WOW SO UGGGGGGG
+      $(document).ready(function () {
+          console.log("started looking for new boards");
+          function loopUntilChange() {
+              $.get('/game2048/game_json/?cachebuster='+(new Date().getTime()), {id: <%= @game.id %>}, function (data) {
+                  var newmagicstring = JSON.stringify(data);
+                  if (newmagicstring != magicjsonstring) {
+                      location.reload(true); // forces cache ignore
+                  }
+                  else {
+                      console.log("Same board");
+                      window.setTimeout(function () {
+                          loopUntilChange()
+                      }, 1000);
+                  }
+              });
+          }
+
+          loopUntilChange();
+      });
+  </script>
+    <div class="row-fluid">
+      <div class="col-sm-6" style="background-color:#C2FFC2">
+        <div id="player">
+          <p>You</p>
+
+          <p>
+            <% for r in 0..3 %>
+                <% for c in 0..3 %>
+                    <span id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
+                <% end %><br>
+            <% end %>
+          </p>
         </div>
       </div>
 
-  <% end %>
-</div>
+      <div class="col-sm-6" style="background-color:#CCE6FF">
+        <div id="opponent">
+          <p>Opponent</p>
+
+          <p>
+            <% first=true %>
+            <% for r in 0..3 %>
+                <% for c in 0..3 %>
+                    <span id="opponent<%= "#{r}#{c}" %>" class="square <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                    <% first = false %>
+                <% end %><br>
+            <% end %>
+          </p>
+        </div>
+      </div>
+    </div>
+<% end %>

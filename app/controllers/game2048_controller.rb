@@ -266,7 +266,14 @@ class Game2048Controller < ApplicationController
     if !@game
       @game = Game2048.find_by_pid2(current_user.id)
     end
+
+    if @game.game_over
+      redirect_to action: "show"
+      return
+    end
+
     @jsonstring = @game.to_json
+
     # Params holds user input from POST request
     # TODO: game id's
     dir = params[:dir]
@@ -338,8 +345,8 @@ class Game2048Controller < ApplicationController
     if in_game
       redirect_to action: "show"
     else
-        Lobby2048.create(pid: current_user.id)
-        redirect_to action: "wait_room"
+      Lobby2048.create(pid: current_user.id)
+      redirect_to action: "wait_room"
     end
     # If not already in game, redirect to waiting room, 
     # and AJAX there will continuously try to create a 
@@ -357,19 +364,30 @@ class Game2048Controller < ApplicationController
       @game = Game2048.find_by_pid2(current_user.id)
     end
 
+    # Update messages
+    if !@game.game_over
+      @game.msg1 = "Game over!"
+      @game.msg2 = "Game over!"
+    end
+
+    # Mark game as completed
+    @game.game_over = true
+
     # Disassociate current player's pid from game
     if current_user.id == @game.pid1
       @game.pid1 = nil
     else
       @game.pid2 = nil
     end
+
     @game.save
 
-    # Delete game if both players are disassociated
+    # Delete game if both player pids are disassociated
     if !@game.pid1 && !@game.pid2
       Game2048.destroy(@game.id)
     end
 
+    # Start a new game
     join_match
   end
 end
