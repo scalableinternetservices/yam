@@ -65,19 +65,21 @@
   </style>
   <% if !@game.game_over && (@game.pid1 == @cur_pid && @game.player1turn || @game.pid2 == @cur_pid && !@game.player1turn) %>
       <div class="row-fluid">
-        <div class="col-sm-6" style="background-color:#C2FFC2">
+        <div class="col-xs-6 col-sm-6 col-md-6" style="">
           <div id="player">
             <p class="who">You</p>
 
-            <p>
+            <div class="board">
               <% for r in 0..3 %>
+		  <div class="row">
                   <% for c in 0..3 %>
                       <span id="player<%= "#{r}#{c}" %>" class="square num<%= @playerboard[r, c] %> unselected grid tile"><%= @playerboard[r, c] %></span>
-                  <% end %><br>
+                  <% end %>
+		  </div>
               <% end %>
-            </p>
+            </div>
           </div>
-
+ 	  <div class="text-center">
           <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')">
             <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
           </button>
@@ -93,23 +95,26 @@
           <button id="dirright" type="button" class="btn btn-default dir unselected" aria-label="Right Button" onclick="selectDir('right')">
             <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
           </button>
+	</div>
         </div>
 
-        <div class="col-sm-6" style="background-color:#CCE6FF">
+        <div class="col-xs-6 col-sm-6 col-md-6">
           <div id="opponent">
             <p class="who">Opponent</p>
 
-            <p>
+            <div class="board">
               <% first=true %>
               <% for r in 0..3 %>
+		  <div class="row">
                   <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %> grid tile" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                      <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
                       <% first = false %>
-                  <% end %><br>
+                  <% end %>
+		  </div>
               <% end %>
-            </p>
+            </div>
           </div>
-          <div id="piecechoices">
+          <div id="piecechoices" class="text-center">
 
             <button id="val1" type="button" class="btn btn-default val selected" aria-label="value 1" onclick="selectVal(1)">
               1
@@ -210,32 +215,36 @@
           });
       </script>
       <div class="row-fluid">
-        <div class="col-sm-6" style="background-color:#C2FFC2; text-align: center;">
+        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: center;">
           <div id="player">
             <p class="who">You</p>
 
-            <p class="padding">
+            <div class="board">
               <% for r in 0..3 %>
+		  <div class="row">
                   <% for c in 0..3 %>
                       <span class= "grid tile" id="player<%= "#{r}#{c}" %>"><%= @playerboard[r, c] %></span>
-                  <% end %><br>
+                  <% end %>
+		  </div>
               <% end %>
-            </p>
+            </div>
           </div>
         </div>
 
-        <div class="col-sm-6" style="background-color:#CCE6FF">
+        <div class="col-xs-6 col-sm-6 col-md-6">
           <div id="opponent">
             <p class="who">Opponent</p>
 
-            <p>
+            <div class="board">
               <% for r in 0..3 %>
+		  <div class="row">
                   <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="square num<%= @opponentboard[r, c] %> unselected grid tile" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
+                      <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> unselected" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= @opponentboard[r, c] %></span>
                       <% first = false %>
-                  <% end %><br>
+                  <% end %>
+		  </div>
               <% end %>
-            </p>
+            </div>
           </div>
         </div>
       </div>

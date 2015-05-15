@@ -1,0 +1,32 @@
+.grid {
+  width: 5rem;
+  height: 5rem;
+  margin-left: 10px;
+  float: left;
+  border-radius: 3px;
+  background: rgba(238, 228, 218, 0.35); 
+  font-size: 100%;
+  text-align: center;
+  padding-top: 1.6rem;
+}
+
+.tile {
+  display: block;
+  color: black;
+  background-color: #FFD685;
+  margin-bottom: 10px;
+}
+
+.tile.opponent {
+  background-color: #D7EBFF;
+}
+
+.who {
+  text-align: center;
+  font-weight: bold;
+  font-size: 200%;
+}
+
+.board {
+  padding-right: 10px;
+}
