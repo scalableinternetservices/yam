@@ -317,6 +317,7 @@ class Game2048Controller < ApplicationController
       @game.game_over = true
       @game.msg1 = (current_user.id == @game.pid1) ? "You lost." : "You won!"
       @game.msg2 = (current_user.id == @game.pid2) ? "You lost." : "You won!"
+      adjust_ratings(@game, current_user.id)
       @game.save
     end
 
@@ -361,10 +362,11 @@ class Game2048Controller < ApplicationController
       @game = Game2048.find_by_pid2(current_user.id)
     end
 
-    # Update messages
+    # Update messages and ratings
     if !@game.game_over
       @game.msg1 = "Game over!"
       @game.msg2 = "Game over!"
+      adjust_ratings(@game, current_user.id)
     end
 
     # Mark game as completed
@@ -387,4 +389,13 @@ class Game2048Controller < ApplicationController
     # Start a new game
     join_match
   end
+end
+
+def adjust_ratings(game, loser_id)
+  winner = User.find_by_id((loser_id == game.pid1) ? game.pid2 : game.pid1)
+  loser = User.find_by_id(loser_id)
+  winner.rating = winner.rating * 0.99 + loser.rating / winner.rating * 20
+  loser.rating = loser.rating * 0.99
+  winner.save
+  loser.save
 end
