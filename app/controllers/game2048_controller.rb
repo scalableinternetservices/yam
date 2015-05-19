@@ -284,8 +284,8 @@ class Game2048Controller < ApplicationController
     # Move and place piece must both be valid until turn ends
     if @game.player1turn && (current_user.id == @game.pid1) # player 1's turn
       new_board1 = Board.new(str: @game.board1).apply_move(str2dir(dir)).to_s
-      new_board2 = Board.new(str: @game.board2).place_piece(row, col, val).to_s
-      if @game.board1 == new_board1 || @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
+      new_board2 = (Board.new(str: @game.board2).full) ? @game.board2 : Board.new(str: @game.board2).place_piece(row, col, val).to_s
+      if @game.board1 == new_board1 || !Board.new(str: @game.board2).full && @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
         @game.msg1 = "You made an invalid move."
       else
         @game.board1 = new_board1
@@ -296,9 +296,9 @@ class Game2048Controller < ApplicationController
       end
       @game.save
     elsif !@game.player1turn && (current_user.id == @game.pid2) # player 2's turn
-      new_board1 = Board.new(str: @game.board1).place_piece(row, col, val).to_s
+      new_board1 = (Board.new(str: @game.board1).full) ? @game.board1 : Board.new(str: @game.board1).place_piece(row, col, val).to_s
       new_board2 = Board.new(str: @game.board2).apply_move(str2dir(dir)).to_s
-      if @game.board1 == new_board1 || @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
+      if !Board.new(str: @game.board1).full && @game.board1 == new_board1 || @game.board2 == new_board2 # p1 made an invalid move; one of the boards didn't change
         @game.msg2 = "You made an invalid move."
       else
         @game.board1 = new_board1
@@ -311,15 +311,12 @@ class Game2048Controller < ApplicationController
     end
 
     # Check if game is over
-    if Board.new(str: @game.board1).full # board1 is full. p1 lost, p2 won
+    gameboard = (current_user.id == @game.pid1) ? Board.new(str: @game.board1) : Board.new(str: @game.board2)
+    # current player lost
+    if !(gameboard != gameboard.apply_move(:up) || gameboard != gameboard.apply_move(:down) || gameboard != gameboard.apply_move(:left) || gameboard != gameboard.apply_move(:right))
       @game.game_over = true
-      @game.msg1 = "You lost."
-      @game.msg2 = "You won!"
-      @game.save
-    elsif Board.new(str: @game.board2).full # board2 is full. p1 won, p2 lost
-      @game.game_over = true
-      @game.msg1 = "You won!"
-      @game.msg2 = "You lost."
+      @game.msg1 = (current_user.id == @game.pid1) ? "You lost." : "You won!"
+      @game.msg2 = (current_user.id == @game.pid2) ? "You lost." : "You won!"
       @game.save
     end
 
