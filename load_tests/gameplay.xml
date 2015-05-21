@@ -31,7 +31,7 @@
     <arrivalphase phase="4" duration="10" unit="second">
       <users arrivalrate="4" unit="second"></users>
     </arrivalphase>
-  </load>
+  </loada
 
   <!-- Options on user agent, when to timeout, etc. -->
   <options>
@@ -90,7 +90,7 @@
           url='/game2048/move'
           version='1.1'
           method='POST'
-          contents="utf8=%E2%9C%93&dir=right&row=1&col=1&val=1">
+          contents="utf8=%E2%9C%93&amp;dir=right&amp;row=1&amp;col=1&amp;val=1">
         </http>
       </request>
 
@@ -103,7 +103,7 @@
           url='/game2048/move'
           version='1.1'
           method='POST'
-          contents="utf8=%E2%9C%93&dir=down&row=2&col=2&val=2">
+          contents="utf8=%E2%9C%93&amp;dir=down&amp;row=2&amp;col=2&amp;val=2">
         </http>
       </request>
 
@@ -116,7 +116,7 @@
           url='/game2048/move'
           version='1.1'
           method='POST'
-          contents="utf8=%E2%9C%93&dir=left&row=3&col=3&val=3">
+          contents="utf8=%E2%9C%93&amp;dir=left&amp;row=3&amp;col=3&amp;val=3">
         </http>
       </request>
 
@@ -127,7 +127,7 @@
       <request>
         <http
           url='/game2048/end_game'
-          version='1.'
+          version='1.1'
           method='POST'
           contents=""
           >
