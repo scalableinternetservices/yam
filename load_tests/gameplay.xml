@@ -31,7 +31,16 @@
     <arrivalphase phase="4" duration="10" unit="second">
       <users arrivalrate="4" unit="second"></users>
     </arrivalphase>
-  </loada
+    <arrivalphase phase="5" duration="10" unit="second">
+      <users arrivalrate="5" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="6" duration="10" unit="second">
+      <users arrivalrate="6" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="7" duration="10" unit="second">
+      <users arrivalrate="7" unit="second"></users>
+    </arrivalphase>
+  </load>
 
   <!-- Options on user agent, when to timeout, etc. -->
   <options>
