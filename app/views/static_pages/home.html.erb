@@ -3,7 +3,7 @@
       <div class="container">
         <h1>Meet | Play | Love</h1>
         <p>Welcome to Project YAM, a multiplayer gaming platform where </br> we match-make who you play against. Come play with us!</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more &raquo;</a></p>
+        <%= link_to "Learn more", static_pages_about_path, class: "btn btn-primary btn-lg" %>
       </div>
     </div>
 
@@ -14,18 +14,17 @@
           <h2>2048 Battle</h2>
           <p>2048 Battle is an intense match of wit and an interesting twist on the viral game 2048! Compete with other players as you try to reach 2048 while sabatoging your opponent's board! Try not to mess up!</p>
 	</br>
-          <div class="btn btn-default" onclick="joinMatch()" role="button">PLAY &raquo;</div>
+          <div class="btn btn-default" onclick="joinMatch()" role="button">PLAY</div>
         </div>
         <div class="col-md-4"> 
           <h2>User Profiles</h2>
           <p>COMING SOON: Meet other players and see the stats of your friends! See their profiles, their past games, and who they've played before. Check out the archive and challenge someone to a new game!</p>
-	  <br>
-          <p><a class="btn btn-default" href="#" role="button">See more &raquo;</a></p>
+          <br><%= link_to "See more", static_pages_profile_path, class: "btn btn-default" %>
        </div>
         <div class="col-md-4">
           <h2>Super Tic-Tac-Toe</h2>
           <p>COMING SOON: Check out a new twist on the classic game of Tic-Tac-Toe! There's nine simueltaneous Tic-Tac-Toe boards that you can complete to win the game. Compete with other online players to discover the unexpected challenges of a childhood favorite!</p>
-          <p><a class="btn btn-default" href="#" role="button">PLAY &raquo;</a></p>
+          <%= link_to "PLAY", static_pages_tictactoe_path, class: "btn btn-default" %>
         </div>
       </div>
 
