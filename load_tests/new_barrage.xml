@@ -72,6 +72,9 @@
         </http>
       </request>
 
+      <!-- Half second to realize we're signed up -->
+      <thinktime value="0.5" random="true"></thinktime>
+
       <!-- Let's join games -->
       <request> 
         <http url='/game2048/wait_room' version='1.1' method='GET'></http>

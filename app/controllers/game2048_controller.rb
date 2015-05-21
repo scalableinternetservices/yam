@@ -245,9 +245,9 @@ class Game2048Controller < ApplicationController
       player1.taken = true
       player1.save
 
-      Game2048.create(pid1: current_user.id, pid2: player2.pid,
-                        board1: Board.new.to_s, board2: Board.new.to_s,
-                        player1turn: true)
+        Game2048.create(pid1: current_user.id, pid2: player2.pid,
+                          board1: Board.new.to_s, board2: Board.new.to_s,
+                          player1turn: true)
 
       Lobby2048.find_by_pid(current_user.id).destroy
       Lobby2048.find_by_pid(player2.pid).destroy
