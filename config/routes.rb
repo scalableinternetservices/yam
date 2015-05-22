@@ -23,6 +23,8 @@ Rails.application.routes.draw do
 
   get 'static_pages/tictactoe'
 
+  get 'users/:id' => 'users#show', as: "user_profile"
+
   resources :games
 
   root 'static_pages#home', as: 'home'
