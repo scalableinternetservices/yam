@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :users
+
   get 'game2048/show'   # Display latest board
 
   get 'game2048/game_json'   # for AJAX. MAKE THIS POST WHEN YOU CAN FIGURE IT OUT.

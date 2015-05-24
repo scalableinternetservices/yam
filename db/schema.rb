@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150519181241) do
+ActiveRecord::Schema.define(version: 20150523220458) do
 
   create_table "game2048s", force: :cascade do |t|
     t.string   "board1"
@@ -42,12 +42,12 @@ ActiveRecord::Schema.define(version: 20150519181241) do
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "",     null: false
-    t.string   "encrypted_password",     default: "",     null: false
+    t.string   "email",                  default: "",      null: false
+    t.string   "encrypted_password",     default: "",      null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,      null: false
+    t.integer  "sign_in_count",          default: 0,       null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -55,6 +55,9 @@ ActiveRecord::Schema.define(version: 20150519181241) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.float    "rating",                 default: 1000.0
+    t.string   "gamer_tag"
+    t.string   "description"
+    t.string   "profile_image",          default: "Happy"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true

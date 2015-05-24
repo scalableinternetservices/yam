@@ -6,7 +6,8 @@
     <!-- left column -->
     <div class="col-md-4 col-sm-6 col-xs-12">
       <div class="text-center">
-        <img src="http://www.skyovnis.com/wp-content/uploads/2014/12/Profile-sky-ovnis.jpg" class="avatar img-circle img-thumbnail" alt="avatar">
+        <%= image_tag("#{@user.profile_image}.jpg") %>
+        <%= @user.profile_image %>
       </div>
     </div>
 

@@ -1,8 +1,35 @@
-<div class="container" style="padding-left: 30px;">
-<h2>Sign up</h2>
+<div class="container" style="padding-left: 60px;">
+
+<h1 class="page-header">Sign up</h1>
 
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
+
+<div class="row">
+
+<!-- left column -->
+    <div class="col-md-4 col-sm-6 col-xs-12">
+      <div class="text-center">
+
+        <%= image_tag("Happy.jpg") %> 
+
+          <!-- class="avatar img-circle img-thumbnail" alt="avatar"> -->
+        <br><br>  
+        <div class="form-group">
+          <div class="padding">
+            <%= f.label :profile_image, class:"control-label"%><br>
+            <%= f.select(:profile_image, options_for_select(["Happy", "Unamused", "Smug", "Blush", "Yam"]), {}, {class: "form-control"}) %> 
+            <%= @user.profile_image %>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  <div class="field">
+    <%= f.label :gamer_tag %><br />
+    <%= f.text_field :gamer_tag, autocomplete: "off" %>
+  </div>
 
   <div class="field">
     <%= f.label :email %><br />
@@ -22,10 +49,15 @@
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
 
+  <!-- pick an image from four choices.. just figure out how"-->
+
   <div class="actions">
     <%= f.submit "Sign up" %>
   </div>
 <% end %>
 
 <%= render "devise/shared/links" %>
+
+</div>
+
 </div>
