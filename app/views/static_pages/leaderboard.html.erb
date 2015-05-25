@@ -1,0 +1,17 @@
+<div class="container table-responsive">
+  <h1>Battle 2048 Leaderboard</h1>
+  <table class="table table-bordered table-hover">
+    <tr>
+      <td>Ranking</td>
+      <td>Gamertag</td>
+      <td>Rating</td>
+    </tr>
+    <% @leaders.each_with_index do |l, i| %>
+        <tr>
+          <td><%= i+1 %></td>
+          <td><%= l.gamer_tag %></td>
+          <td><%= l.rating %></td>
+        </tr>
+    <% end %>
+  </table>
+</div>

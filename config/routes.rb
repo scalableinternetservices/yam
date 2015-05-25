@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
   get 'static_pages/battle_2048_instructions'
 
+  get 'static_pages/leaderboard'
+
   get 'users/:id' => 'users#show', as: "user_profile"
 
   resources :games
