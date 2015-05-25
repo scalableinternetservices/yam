@@ -193,11 +193,35 @@ class Game2048Controller < ApplicationController
       @game = Game2048.find_by_pid2(current_user.id)
     end
 
-    # Print out boards
     @jsonstring = @game.to_json
-    @playerboard = Board.new(str:((current_user.id == @game.pid1) ? @game.board1 : @game.board2)).board
-    @opponentboard = Board.new(str:((current_user.id == @game.pid1) ? @game.board2 : @game.board1)).board
     @cur_pid = current_user.id
+
+    if current_user.id == @game.pid1
+      if @game.player1turn
+        @other_user = User.find_by_id(@game.pid2)
+        @playerboard = Board.new(str: @game.board1).board
+        @opponentboard = Board.new(str: @game.board2).board
+        return render :show_player
+      else
+        @other_user = User.find_by_id(@game.pid1)
+        @playerboard = Board.new(str: @game.board2).board
+        @opponentboard = Board.new(str: @game.board1).board
+        return render :show_waiter
+      end
+    else
+      if !(@game.player1turn)
+        @other_user = User.find_by_id(@game.pid1)
+        @playerboard = Board.new(str: @game.board2).board
+        @opponentboard = Board.new(str: @game.board1).board
+        return render :show_player
+      else
+        @other_user = User.find_by_id(@game.pid2)
+        @playerboard = Board.new(str: @game.board1).board
+        @opponentboard = Board.new(str: @game.board2).board
+        return render :show_waiter
+      end
+    end
+    # Print out boards
   end
 
   def game_json
@@ -383,7 +407,7 @@ class Game2048Controller < ApplicationController
 
     # Delete game if both player pids are disassociated
     if !@game.pid1 && !@game.pid2
-      Game2048.destroy(@game.id)
+      Game2048.dest   roy(@game.id)
     end
 
     # Start a new game

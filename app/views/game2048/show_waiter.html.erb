@@ -1,0 +1,74 @@
+<link rel="stylesheet" type="text/css" href="css/game_2048view.css">
+<div class="container">
+  <div class="center">
+    <h1>Battle 2048</h1>
+        <p>
+        <h4><%= @game.msg2 %></h4>
+
+        (!!!)You are currently playing <%= @other_user.email %>.
+
+        </p>
+  <div class="center">
+    <%= button_to "New Game", {action: "end_game"}, class: "btn btn-success" %>
+  </div>
+    <!--
+        Not the current player's turn.
+        Display board so they can strategize while waiting.
+        They cannot submit anything, however.
+      -->
+      <script>
+          var magicjsonstring = JSON.stringify(<%=  raw(@jsonstring) %>); // WOW SO UGGGGGGG
+          $(document).ready(function () {
+              console.log("started looking for new boards");
+              function loopUntilChange() {
+                  $.get('/game2048/game_json/?cachebuster=' + (new Date().getTime()), {id: <%= @game.id %>}, function (data) {
+                      var newmagicstring = JSON.stringify(data);
+                      if (newmagicstring != magicjsonstring) {
+                          location.reload(true); // forces cache ignore
+                      }
+                      else {
+                          console.log("Same board");
+                          window.setTimeout(function () {
+                              loopUntilChange()
+                          }, 1000);
+                      }
+                  });
+              }
+
+              loopUntilChange();
+          });
+      </script>
+      <div class="row-fluid">
+        <div class="col-xs-6 col-sm-6 col-md-6" style="text-align: center;">
+          <div id="player">
+            <p class="who">You</p>
+
+            <div class="board">
+              <% for r in 0..3 %>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span class="grid tile" id="player<%= "#{r}#{c}" %>"><%= (@playerboard[r, c] == 0) ? " " : 2 ** @playerboard[r, c] %></span>
+                    <% end %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-6 col-sm-6 col-md-6">
+          <div id="opponent">
+            <p class="who">Opponent</p>
+
+            <div class="board">
+              <% for r in 0..3 %>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> unselected" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= (@opponentboard[r, c] == 0) ? " " : 2 ** @opponentboard[r, c] %></span>
+                        <% first = false %>
+                    <% end %>
+                  </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
