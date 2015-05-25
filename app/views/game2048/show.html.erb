@@ -71,31 +71,31 @@
 
             <div class="board">
               <% for r in 0..3 %>
-		  <div class="row">
-                  <% for c in 0..3 %>
-                      <span id="player<%= "#{r}#{c}" %>" class="square num<%= @playerboard[r, c] %> unselected grid tile"><%= (@playerboard[r, c] == 0) ? " " : 2 ** @playerboard[r, c] %></span>
-                  <% end %>
-		  </div>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span id="player<%= "#{r}#{c}" %>" class="square num<%= @playerboard[r, c] %> unselected grid tile"><%= (@playerboard[r, c] == 0) ? " " : 2 ** @playerboard[r, c] %></span>
+                    <% end %>
+                  </div>
               <% end %>
             </div>
           </div>
- 	  <div class="text-center">
-          <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')">
-            <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
-          </button>
+          <div class="text-center">
+            <button id="dirup" type="button" class="btn btn-default dir selected" aria-label="Up Button" onclick="selectDir('up')">
+              <span class="glyphicon glyphicon-arrow-up" aria-hidden="true"></span>
+            </button>
 
-          <button id="dirdown" type="button" class="btn btn-default dir unselected" aria-label="Down Button" onclick="selectDir('down')">
-            <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
-          </button>
+            <button id="dirdown" type="button" class="btn btn-default dir unselected" aria-label="Down Button" onclick="selectDir('down')">
+              <span class="glyphicon glyphicon-arrow-down" aria-hidden="true"></span>
+            </button>
 
-          <button id="dirleft" type="button" class="btn btn-default dir unselected" aria-label="Left Button" onclick="selectDir('left')">
-            <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
-          </button>
+            <button id="dirleft" type="button" class="btn btn-default dir unselected" aria-label="Left Button" onclick="selectDir('left')">
+              <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+            </button>
 
-          <button id="dirright" type="button" class="btn btn-default dir unselected" aria-label="Right Button" onclick="selectDir('right')">
-            <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
-          </button>
-	</div>
+            <button id="dirright" type="button" class="btn btn-default dir unselected" aria-label="Right Button" onclick="selectDir('right')">
+              <span class="glyphicon glyphicon-arrow-right" aria-hidden="true"></span>
+            </button>
+          </div>
         </div>
 
         <div class="col-xs-6 col-sm-6 col-md-6">
@@ -105,12 +105,12 @@
             <div class="board">
               <% first=true %>
               <% for r in 0..3 %>
-		  <div class="row">
-                  <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= (@opponentboard[r, c] == 0) ? " " : 2 ** @opponentboard[r, c] %></span>
-                      <% first = false %>
-                  <% end %>
-		  </div>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> <%= (first) ? "selected" : "unselected" %>" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= (@opponentboard[r, c] == 0) ? " " : 2 ** @opponentboard[r, c] %></span>
+                        <% first = false %>
+                    <% end %>
+                  </div>
               <% end %>
             </div>
           </div>
@@ -221,11 +221,11 @@
 
             <div class="board">
               <% for r in 0..3 %>
-		  <div class="row">
-                  <% for c in 0..3 %>
-                      <span class= "grid tile" id="player<%= "#{r}#{c}" %>"><%= (@playerboard[r, c] == 0) ? " " : 2 ** @playerboard[r, c]%></span>
-                  <% end %>
-		  </div>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span class="grid tile" id="player<%= "#{r}#{c}" %>"><%= (@playerboard[r, c] == 0) ? " " : 2 ** @playerboard[r, c] %></span>
+                    <% end %>
+                  </div>
               <% end %>
             </div>
           </div>
@@ -237,12 +237,12 @@
 
             <div class="board">
               <% for r in 0..3 %>
-		  <div class="row">
-                  <% for c in 0..3 %>
-                      <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> unselected" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= (@opponentboard[r, c] == 0) ? " " : 2 ** @opponentboard[r, c] %></span>
-                      <% first = false %>
-                  <% end %>
-		  </div>
+                  <div class="row">
+                    <% for c in 0..3 %>
+                        <span id="opponent<%= "#{r}#{c}" %>" class="grid tile opponent square num<%= @opponentboard[r, c] %> unselected" onclick="selectSquare(<%= "#{r},#{c}"%>)"><%= (@opponentboard[r, c] == 0) ? " " : 2 ** @opponentboard[r, c] %></span>
+                        <% first = false %>
+                    <% end %>
+                  </div>
               <% end %>
             </div>
           </div>

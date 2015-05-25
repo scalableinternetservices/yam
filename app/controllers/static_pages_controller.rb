@@ -7,9 +7,7 @@ class StaticPagesController < ApplicationController
     expires_in 24.hours, public: true
   end
 
-  def profile
-  end
-
-  def tictactoe
+  def battle_2048_instructions
+    expires_in 24.hours, public: true
   end
 end

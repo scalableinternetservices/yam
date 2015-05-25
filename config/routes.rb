@@ -20,9 +20,7 @@ Rails.application.routes.draw do
 
   get 'static_pages/about'
 
-  get 'static_pages/profile'
-
-  get 'static_pages/tictactoe'
+  get 'static_pages/battle_2048_instructions'
 
   get 'users/:id' => 'users#show', as: "user_profile"
 
