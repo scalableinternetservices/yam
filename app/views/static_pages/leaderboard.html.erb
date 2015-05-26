@@ -9,7 +9,7 @@
     <% @leaders.each_with_index do |l, i| %>
         <tr>
           <td><%= i+1 %></td>
-          <td><%= l.gamer_tag %></td>
+          <td><%= link_to "#{l.gamer_tag}", user_profile_path(l.id) %></td>
           <td><%= l.rating %></td>
         </tr>
     <% end %>
