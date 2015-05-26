@@ -13,17 +13,25 @@
         <div class="col-md-4">
           <h2>Battle 2048</h2>
           <p>Battle 2048 is an intense match of wit and an interesting twist on the viral game 2048! Compete with other players as you try to reach 2048 while sabatoging your opponent's board! Try not to mess up!</p>
-	</br>
-          <div class="btn btn-primary" onclick="joinMatch()" role="button">PLAY</div>
         </div>
         <div class="col-md-4"> 
           <h2>How to Play</h2>
           <p>Learn how to play Battle 2048!</p>
-          <%= link_to "See More", static_pages_battle_2048_instructions_path, :class => 'btn btn-primary' %>
        </div>
         <div class="col-md-4">
           <h2>Leaderboards</h2>
           <p>Find out who are the top players of Battle 2048, or see the stats of your friends! Check out user profiles, their past games, and who they've played before. Check out the archive and challenge someone to a new game!</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="btn btn-primary" onclick="joinMatch()" role="button">PLAY</div>
+        </div>
+        <div class="col-md-4">
+          <%= link_to "See More", static_pages_battle_2048_instructions_path, :class => 'btn btn-primary' %>
+        </div>
+        <div class="col-md-4">
+          <%= link_to "See More", static_pages_leaderboard_path, :class => 'btn btn-primary' %>
         </div>
       </div>
 
