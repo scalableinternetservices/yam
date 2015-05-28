@@ -38,22 +38,22 @@
       <users arrivalrate="500" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="7" duration="10" unit="second">
-      <users arrivalrate="1000" unit="second"></users>
+      <users arrivalrate="750" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="8" duration="10" unit="second">
-      <users arrivalrate="1500" unit="second"></users>
+      <users arrivalrate="1000" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="9" duration="10" unit="second">
-      <users arrivalrate="2500" unit="second"></users>
+      <users arrivalrate="1500" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="10" duration="10" unit="second">
-      <users arrivalrate="5000" unit="second"></users>
+      <users arrivalrate="2000" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="11" duration="10" unit="second">
-      <users arrivalrate="10000" unit="second"></users>
+      <users arrivalrate="2500" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="12" duration="10" unit="second">
-      <users arrivalrate="25000" unit="second"></users>
+      <users arrivalrate="3500" unit="second"></users>
     </arrivalphase>
   </load>
 
