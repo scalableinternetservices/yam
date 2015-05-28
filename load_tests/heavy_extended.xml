@@ -49,12 +49,6 @@
     <arrivalphase phase="10" duration="10" unit="second">
       <users arrivalrate="2000" unit="second"></users>
     </arrivalphase>
-    <arrivalphase phase="11" duration="10" unit="second">
-      <users arrivalrate="2500" unit="second"></users>
-    </arrivalphase>
-    <arrivalphase phase="12" duration="10" unit="second">
-      <users arrivalrate="3500" unit="second"></users>
-    </arrivalphase>
   </load>
 
   <!-- Options on user agent, when to timeout, etc. -->
