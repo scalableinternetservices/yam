@@ -1,7 +1,11 @@
+<% cache(cache_key_for_profile(@user)) do %>
 <div class="container" style="padding-top: 60px;">
 
+  <% cache(cache_key_for_gamer_tag(@user)) do %>
   <h1 class="page-header">User Profile | <%= @user.gamer_tag %></h1>
+  <% end %>
 
+  <% cache(cache_key_for_image(@user)) do %>
   <div class="row">
     <!-- left column -->
     <div class="col-md-4 col-sm-6 col-xs-12">
@@ -9,7 +13,9 @@
         <%= image_tag("#{@user.profile_image}.jpg") %>
       </div>
     </div>
-
+  <% end %>
+  
+    <% cache(cache_key_for_profile_info(@user)) do %>
     <!-- edit form column -->
     <div class="col-md-8 col-sm-6 col-xs-12">
       <h3>Personal info</h3>
@@ -22,8 +28,14 @@
             <b>Description:</b> <br><br>
             <!-- goals: if they don't have a description, we say that.. -->
             <%= @user.description %>
-            <p><%= link_to 'Edit', edit_user_registration_path, :class => 'btn btn-primary' %></p>
+	    <% if user_signed_in? %>
+	    	<% if current_user.email == @user.email %>
+            		<p><%= link_to 'Edit', edit_user_registration_path, :class => 'btn btn-primary' %></p>
+	    	<% end %>
+	    <% end %>
           </div>
         </div>
     </div>
+    <% end %>
   </div>
+<% end %>
