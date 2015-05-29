@@ -197,27 +197,23 @@ class Game2048Controller < ApplicationController
     @cur_pid = current_user.id
 
     if current_user.id == @game.pid1
+      @other_user = User.find_by_id(@game.pid2)
+      @playerboard = Board.new(str: @game.board1).board
+      @opponentboard = Board.new(str: @game.board2).board
+      
       if @game.player1turn
-        @other_user = User.find_by_id(@game.pid2)
-        @playerboard = Board.new(str: @game.board1).board
-        @opponentboard = Board.new(str: @game.board2).board
         return render :show_player
       else
-        @other_user = User.find_by_id(@game.pid2)
-        @playerboard = Board.new(str: @game.board1).board
-        @opponentboard = Board.new(str: @game.board2).board
         return render :show_waiter
       end
     else
+      @other_user = User.find_by_id(@game.pid1)
+      @playerboard = Board.new(str: @game.board2).board
+      @opponentboard = Board.new(str: @game.board1).board
+
       if !(@game.player1turn)
-        @other_user = User.find_by_id(@game.pid1)
-        @playerboard = Board.new(str: @game.board2).board
-        @opponentboard = Board.new(str: @game.board1).board
         return render :show_player
       else
-        @other_user = User.find_by_id(@game.pid1)
-        @playerboard = Board.new(str: @game.board2).board
-        @opponentboard = Board.new(str: @game.board1).board
         return render :show_waiter
       end
     end
