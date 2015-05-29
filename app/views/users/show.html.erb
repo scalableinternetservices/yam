@@ -1,6 +1,9 @@
+<% cache(cache_key_for_profile(@user)) do %>
 <div class="container" style="padding-top: 60px;">
 
+  <% cache(cache_key_for_gamer_tag(@user)) do %>
   <h1 class="page-header">User Profile | <%= @user.gamer_tag %></h1>
+  <% end %>
 
   <div class="row">
     <!-- left column -->
@@ -22,8 +25,12 @@
             <b>Description:</b> <br><br>
             <!-- goals: if they don't have a description, we say that.. -->
             <%= @user.description %>
+
+	    <% if current_user.email == @user.email %>
             <p><%= link_to 'Edit', edit_user_registration_path, :class => 'btn btn-primary' %></p>
+	    <% end %>
           </div>
         </div>
     </div>
   </div>
+<% end %>
