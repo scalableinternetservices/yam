@@ -26,6 +26,9 @@ ActiveRecord::Schema.define(version: 20150529224742) do
     t.boolean  "game_over",   default: false
   end
 
+  add_index "game2048s", ["pid1"], name: "index_game2048s_on_pid1"
+  add_index "game2048s", ["pid2"], name: "index_game2048s_on_pid2"
+
   create_table "games", force: :cascade do |t|
     t.string   "title"
     t.text     "description"
@@ -40,6 +43,8 @@ ActiveRecord::Schema.define(version: 20150529224742) do
     t.datetime "updated_at",                 null: false
     t.boolean  "taken",      default: false
   end
+
+  add_index "lobby2048s", ["pid"], name: "index_lobby2048s_on_pid"
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "",           null: false
