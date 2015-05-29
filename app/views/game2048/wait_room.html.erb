@@ -1,4 +1,3 @@
-<% cache(cache_key_for_waitroom) do %>
 <h1>Please wait to join a game.</h1>
 <script>
   var magicjsonstring = JSON.stringify(<%=  raw(@jsonstring) %>); // WOW SO UGGGGGGG
@@ -22,4 +21,4 @@
               loopUntilChange();
           });
 </script>
-<% end %>
+
