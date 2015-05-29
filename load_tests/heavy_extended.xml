@@ -20,34 +20,43 @@
   <!-- The phases and the number of users/second -->
   <load>
     <arrivalphase phase="1" duration="10" unit="second">
-      <users arrivalrate="10" unit="second"></users>
+      <users arrivalrate="1" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="2" duration="10" unit="second">
-      <users arrivalrate="20" unit="second"></users>
+      <users arrivalrate="5" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="3" duration="10" unit="second">
-      <users arrivalrate="40" unit="second"></users>
+      <users arrivalrate="10" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="4" duration="10" unit="second">
-      <users arrivalrate="100" unit="second"></users>
+      <users arrivalrate="20" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="5" duration="10" unit="second">
-      <users arrivalrate="250" unit="second"></users>
+      <users arrivalrate="30" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="6" duration="10" unit="second">
-      <users arrivalrate="500" unit="second"></users>
+      <users arrivalrate="50" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="7" duration="10" unit="second">
-      <users arrivalrate="750" unit="second"></users>
+      <users arrivalrate="75" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="8" duration="10" unit="second">
-      <users arrivalrate="1000" unit="second"></users>
+      <users arrivalrate="100" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="9" duration="10" unit="second">
-      <users arrivalrate="1500" unit="second"></users>
+      <users arrivalrate="125" unit="second"></users>
     </arrivalphase>
     <arrivalphase phase="10" duration="10" unit="second">
-      <users arrivalrate="2000" unit="second"></users>
+      <users arrivalrate="150" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="11" duration="10" unit="second">
+      <users arrivalrate="175" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="12" duration="10" unit="second">
+      <users arrivalrate="200" unit="second"></users>
+    </arrivalphase>
+    <arrivalphase phase="13" duration="10" unit="second">
+      <users arrivalrate="250" unit="second"></users>
     </arrivalphase>
   </load>
 
