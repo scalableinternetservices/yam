@@ -4,10 +4,10 @@
     <h1>Battle 2048</h1>
 
         <p>
-        <h4><%= @game.msg1 %></h4>
+    <h4><%= (@game.pid1 == @cur_pid) ? @game.msg1 : @game.msg2 %></h4>
 
 
-          (-_-)You are currently playing <%= @other_user.email %>.
+    (-_-)You are currently playing <%= @other_user.email %>.
 
         </p>
   </div>

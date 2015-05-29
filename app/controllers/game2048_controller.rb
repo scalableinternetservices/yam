@@ -203,9 +203,9 @@ class Game2048Controller < ApplicationController
         @opponentboard = Board.new(str: @game.board2).board
         return render :show_player
       else
-        @other_user = User.find_by_id(@game.pid1)
-        @playerboard = Board.new(str: @game.board2).board
-        @opponentboard = Board.new(str: @game.board1).board
+        @other_user = User.find_by_id(@game.pid2)
+        @playerboard = Board.new(str: @game.board1).board
+        @opponentboard = Board.new(str: @game.board2).board
         return render :show_waiter
       end
     else
@@ -215,9 +215,9 @@ class Game2048Controller < ApplicationController
         @opponentboard = Board.new(str: @game.board1).board
         return render :show_player
       else
-        @other_user = User.find_by_id(@game.pid2)
-        @playerboard = Board.new(str: @game.board1).board
-        @opponentboard = Board.new(str: @game.board2).board
+        @other_user = User.find_by_id(@game.pid1)
+        @playerboard = Board.new(str: @game.board2).board
+        @opponentboard = Board.new(str: @game.board1).board
         return render :show_waiter
       end
     end
@@ -318,7 +318,6 @@ class Game2048Controller < ApplicationController
         @game.msg1 = "It's not your turn."
         @game.msg2 = "It's your turn!"
       end
-      @game.save
     elsif !@game.player1turn && (current_user.id == @game.pid2) # player 2's turn
       new_board1 = (Board.new(str: @game.board1).full) ? @game.board1 : Board.new(str: @game.board1).place_piece(row, col, val).to_s
       new_board2 = Board.new(str: @game.board2).apply_move(str2dir(dir)).to_s
@@ -331,7 +330,6 @@ class Game2048Controller < ApplicationController
         @game.msg1 = "It's your turn!"
         @game.msg2 = "It's not your turn."
       end
-      @game.save
     end
 
     # Check if game is over
@@ -342,9 +340,8 @@ class Game2048Controller < ApplicationController
       @game.msg1 = (current_user.id == @game.pid1) ? "You lost." : "You won!"
       @game.msg2 = (current_user.id == @game.pid2) ? "You lost." : "You won!"
       adjust_ratings(@game, current_user.id)
-      @game.save
     end
-
+    @game.save # only need to save once
     # Redirect to show() to display updated board
     redirect_to action: "show"
   end
@@ -407,7 +404,7 @@ class Game2048Controller < ApplicationController
 
     # Delete game if both player pids are disassociated
     if !@game.pid1 && !@game.pid2
-      Game2048.dest   roy(@game.id)
+      Game2048.destroy(@game.id)
     end
 
     # Start a new game
