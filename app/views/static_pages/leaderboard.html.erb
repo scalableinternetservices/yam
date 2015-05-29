@@ -1,3 +1,4 @@
+<% cache(cache_key_for_leaderboard) do %>
 <div class="container table-responsive">
   <h1>Battle 2048 Leaderboard</h1>
   <table class="table table-bordered table-hover">
@@ -7,11 +8,14 @@
       <td>Rating</td>
     </tr>
     <% @leaders.each_with_index do |l, i| %>
+	<% cache(cache_key_for_leader_row(l)) do %>
         <tr>
           <td><%= i+1 %></td>
           <td><%= link_to "#{l.gamer_tag}", user_profile_path(l.id) %></td>
           <td><%= l.rating %></td>
         </tr>
+	<% end %>
     <% end %>
   </table>
 </div>
+<% end %>
