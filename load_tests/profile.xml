@@ -193,11 +193,23 @@
       <!-- Wait to join new game -->
       <thinktime value="3" random="true"></thinktime>
 
-      <!-- TODO: I wonder what the new player is like -->
+      <!-- Look at random user profile -->
+      <setdynvars sourcetype="random_number" start="0" end="9999">
+        <var name="user_profile_num" />
+      </setdynvars>
 
-      <!-- TODO: Look at our own profile -->
+      <request> 
+        <http url='/users/%%_user_profile_num%%' version='1.1' method='GET'></http>
+      </request>
 
-      <!-- TODO: Edit our profile -->
+      <thinktime value="2" random="true"></thinktime>
+
+      <!-- TODO: Look at leaderboard -->
+      <request> 
+        <http url='/static_pages/leaderboard' version='1.1' method='GET'></http>
+      </request>
+
+      <thinktime value="2" random="true"></thinktime>
       
       <!-- That's enough gaming for today -->
       <request>
