@@ -3,12 +3,14 @@
   <div class="center">
     <h1>Battle 2048</h1>
 
-    <p>
-    <h4><%= (@game.pid1 == @cur_pid) ? @game.msg1 : @game.msg2 %></h4>
+    <% if !@game.game_over %>
+        <h4><%= (@game.pid1 == @cur_pid) ? @game.msg1 : @game.msg2 %></h4>
+        <p>You are currently playing <%= @other_user.email %>.</p>
+    <% else %>
+        <p>Game over!</p>
+    <% end %>
+  </div>
 
-    You are currently playing <%= @other_user.email %>.
-
-    </p>
     <div class="center">
       <%= button_to "New Game", {action: "end_game"}, class: "btn btn-success" %>
     </div>

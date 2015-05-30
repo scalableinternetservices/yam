@@ -30,3 +30,23 @@
 .board {
   padding-right: 10px;
 }
+
+.dir.selected {
+     background-color: #b0c4de;
+ }
+
+.val.selected {
+    background-color: #b0c4de;
+}
+
+.square.selected {
+    background-color: #b0c4de;
+}
+
+#pleasenopush {
+    display: none;
+}
+
+.center {
+    text-align: center;
+}
