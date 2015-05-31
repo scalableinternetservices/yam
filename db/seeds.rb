@@ -7,7 +7,7 @@
 #   Mayor.create(name: 'Emanuel', city: cities.first)
 
 # Create 10000 users and games
-10000.times do |n|
+100000.times do |n|
   User.create!(id: n, email: "test#{n}@test.com", password: 'password', password_confirmation: 'password', gamer_tag: "user#{n}")
   # puts "Created user: test#{n}@test.com"
 
