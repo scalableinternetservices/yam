@@ -3,13 +3,12 @@
   <div class="center">
     <h1>Battle 2048</h1>
 
-        <p>
-    <h4><%= (@game.pid1 == @cur_pid) ? @game.msg1 : @game.msg2 %></h4>
-
-
-    You are currently playing <%= @other_user.email %>.
-
-        </p>
+    <% if !@game.game_over %>
+        <h4><%= (@game.pid1 == @cur_pid) ? @game.msg1 : @game.msg2 %></h4>
+        <p>You are currently playing <%= @other_user.email %>.</p>
+    <% else %>
+        <p>Game over!</p>
+    <% end %>
   </div>
 
   <div class="center">
@@ -18,27 +17,6 @@
 
   <br>
 
-  <style>
-      .dir.selected {
-          background-color: #b0c4de;
-      }
-
-      .val.selected {
-          background-color: #b0c4de;
-      }
-
-      .square.selected {
-          background-color: #b0c4de;
-      }
-
-      #pleasenopush {
-          display: none;
-      }
-
-      .center {
-          text-align: center;
-      }
-  </style>
       <div class="row-fluid">
         <div class="col-xs-6 col-sm-6 col-md-6" style="">
           <div id="player">
