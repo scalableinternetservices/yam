@@ -8,7 +8,7 @@
 
 # Create 48 users and games
 48.times do |n|
-  User.create!(id: n, email: "test#{n}@test.com", password: 'password', password_confirmation: 'password', gamer_tag: "user#{n}")
+  User.create!(id: n, email: "test#{n}@test.com", password: 'password', password_confirmation: 'password', gamer_tag: "user#{n}", rating: 1000.0)
   # puts "Created user: test#{n}@test.com"
 
   # Game2048.create(pid1: n, pid2: n + 1,
